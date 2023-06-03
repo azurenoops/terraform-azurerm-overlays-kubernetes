@@ -5,41 +5,42 @@
 ###########################
 # Global Configuration   ##
 ###########################
-
+variable "aks_name" {
+  description = "Name of the AKS cluster"
+  type        = string
+  default     = "anoa-aks"
+}
 variable "location" {
   description = "Azure region in which instance will be hosted"
   type        = string
+  default     = "usgovarizona"
 }
-
-variable "environment" {
-  description = "The Terraform backend environment e.g. public or usgovernment"
-  type        = string
-}
-
 variable "deploy_environment" {
   description = "Name of the workload's environnement"
   type        = string
+  default     = "dev"
 }
-
 variable "workload_name" {
   description = "Name of the workload_name"
   type        = string
+  default     = "dev"
 }
 
 variable "org_name" {
   description = "Name of the organization"
   type        = string
+  default     = "anoa"
 }
-
+variable "environment" {
+  description = "The Terraform backend environment e.g. public or usgovernment"
+  type        = string
+  default     = "usgovernment"
+}
 #######################
 # RG Configuration   ##
 #######################
 
-variable "create_resource_group" {
-  description = "Controls if the resource group should be created. If set to false, the resource group name must be provided. Default is false."
-  type        = bool
-  default     = false
-}
+
 
 variable "use_location_short_name" {
   description = "Use short location name for resources naming (ie eastus -> eus). Default is true. If set to false, the full cli location name will be used. if custom naming is set, this variable will be ignored."
@@ -60,6 +61,7 @@ variable "existing_resource_group_name" {
 variable "dns_prefix" {
   description = "(Optional) DNS prefix specified when creating the managed cluster. Changing this forces a new resource to be created."
   type        = string
+  default     = "anoa-aks"
 }
 
 variable "private_cluster_enabled" {
@@ -344,11 +346,13 @@ variable "additional_node_pool_node_count" {
 variable "log_analytics_workspace_name" {
   description = "(Optional) The name of the Log Analytics Workspace which the OMS Agent should send data to. Must be present if enabled is true."
   type        = string
+  default     = null
 }
 
 variable "tenant_id" {
   description = "(Required) The tenant id of the system assigned identity which is used by master components."
   type        = string
+  default     = null
 }
 
 variable "log_analytics_retention_days" {
@@ -360,6 +364,7 @@ variable "log_analytics_retention_days" {
 variable "vnet_subnet_id" {
   description = "(Optional) The ID of a Subnet where the Kubernetes Node Pool should exist. Changing this forces a new resource to be created."
   type        = string
+  default     = null
 }
 
 variable "pod_subnet_id" {
@@ -412,6 +417,7 @@ variable "admin_username" {
 variable "ssh_public_key" {
   description = "(Required) Specifies the SSH public key used to access the cluster. Changing this forces a new resource to be created."
   type        = string
+  default     = null 
 }
 
 variable "keda_enabled" {

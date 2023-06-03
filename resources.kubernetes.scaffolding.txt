@@ -42,3 +42,12 @@ module "mod_scaffold_rg" {
   }) # Tags to be applied to all resources
 }
 
+output "rg_name" {
+  value = module.mod_scaffold_rg.rg_name
+}
+/*
+output "rg_id" {
+  value = module.mod_scaffold_rg.rg_id
+}
+*/
+
