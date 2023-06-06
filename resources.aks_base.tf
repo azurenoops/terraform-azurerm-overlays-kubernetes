@@ -39,7 +39,7 @@ resource "azurerm_kubernetes_cluster" "priv_aks" {
     #dns_service_ip     = var.network_dns_service_ip
     network_plugin     = var.network_plugin
     #outbound_type      = var.outbound_type
-   #service_cidr       = var.network_service_cidr
+    #service_cidr       = var.network_service_cidr
   }
 
   oms_agent {
