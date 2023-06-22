@@ -5,13 +5,12 @@
 # Azure Kubernetes Service (AKS) Cluster
 #----------------------------------------------------------------
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
-  create_resource_group             = true
-  location                          = var.location
-  
-  deploy_environment                = var.deploy_environment
-  org_name                          = var.org_name
-  environment                       = var.environment
-
+  #create_resource_group            = false
+  location                         = var.location
+  resource_group_name              = var.aks_resource_group_name
+  #deploy_environment              = var.deploy_environment
+  #org_name                        = var.org_name
+  #environment                     = var.environment
   name                             = var.aks_name
   kubernetes_version               = var.kubernetes_version
   dns_prefix                       = var.dns_prefix
@@ -47,10 +46,12 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
   linux_profile {
     admin_username = var.admin_username
-    #ssh_key {
-     #   key_data = var.ssh_public_key
+    ssh_key {
+       key_data = data.azurerm_kubernetes_cluster.aks_cluster.linux_profile.0.ssh_key.0.key_data
+                  #var.ssh_public_key
     }
   }
+  
 
   identity {
     type = "UserAssigned"
@@ -97,3 +98,4 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
       tags
     ]
   }
+}

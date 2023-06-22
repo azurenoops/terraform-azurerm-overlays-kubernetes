@@ -5,13 +5,14 @@ module "mod_virtual_machine" {
   version = "1.0.0"
 
   # Resource Group, location, VNet and Subnet details
-  location              = var.linux-jb_location
-  #environment           = var.linux-jb_environment
-  deploy_environment    = var.linux-jb_deploy_environment
-  org_name              = var.linux-jb_org_name
-  workload_name         = var.linux-jb_workload_name
-  virtual_network_name  = var.linux-jb_vnet_name
-  subnet_name           = var.linux-jb_subnet_name
+  location                      = var.linux-jb_location
+  #environment                  = var.linux-jb_environment
+  deploy_environment           = var.linux-jb_deploy_environment
+  org_name                      = var.linux-jb_org_name
+  workload_name                 = var.linux-jb_workload_name
+  virtual_network_name          = var.linux-jb_vnet_name
+  subnet_name                   = var.linux-jb_subnet_name
+  existing_resource_group_name  = var.existing_resource_group_name
 
   # This module supports a variety of pre-configured Linux and Windows distributions.
   # See the README.md file for more pre-defined Ubuntu, Centos, and RedHat images.
@@ -24,7 +25,7 @@ module "mod_virtual_machine" {
   linux_distribution_name = "ubuntu2004"
   virtual_machine_size    = "Standard_B2s"
   generate_admin_ssh_key  = true
-  instances_count         = 2 # Number of VM's to be deployed
+  instances_count         = 1 # Number of VM's to be deployed
 
   # The proximity placement group, Availability Set, and assigning a public IP address to VMs are all optional.
   # If you don't wish to utilize these arguments, delete them from the module. 

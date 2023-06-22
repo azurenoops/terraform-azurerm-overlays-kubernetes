@@ -70,7 +70,7 @@ variable "default_node_pool_os_type" {
   type = string
   default = "Managed"
 }
-
+/*
 variable "tags" {
   type = map(string)
   default = {
@@ -78,6 +78,7 @@ variable "tags" {
     "org"         = "anoa"
   }
 }
+*/
 
 #linux_profile 
 variable "admin_username" {

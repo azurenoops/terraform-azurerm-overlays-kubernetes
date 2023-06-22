@@ -1,4 +1,3 @@
-
 resource "azurerm_role_assignment" "network_contributor" {
   scope                = local.resource_group_name
   role_definition_name = "Network Contributor"

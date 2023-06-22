@@ -3,26 +3,26 @@
 
 locals {
   default_agent_profile = {
-    name                   = var.default_node_pool.name
-    node_count             = var.default_node_pool.node_count
-    vm_size                = var.default_node_pool.vm_size
-    os_type                = var.default_node_pool.os_type
-    zones                  = var.default_node_pool.zones
-    enable_auto_scaling    = var.default_node_pool.enable_auto_scaling
-    min_count              = var.default_node_pool.min_count
-    max_count              = var.default_node_pool.max_count
-    type                   = var.default_node_pool.type
-    node_taints            = var.default_node_pool.node_taints
-    node_labels            = var.default_node_pool.node_labels
-    orchestrator_version   = var.default_node_pool.orchestrator_version
-    priority               = var.default_node_pool.priority
-    enable_host_encryption = var.default_node_pool.enable_host_encryption
-    eviction_policy        = var.default_node_pool.eviction_policy
+    name                   = var.default_node_pool_name
+    node_count             = var.default_node_pool_node_count
+    vm_size                = var.default_node_pool_vm_size
+    os_type                = var.default_node_pool_os_type
+    zones                  = var.default_node_pool_zones
+    enable_auto_scaling    = var.default_node_pool_enable_auto_scaling
+    min_count              = var.default_node_pool_min_count
+    max_count              = var.default_node_pool_max_count
+    type                   = var.default_node_pool_type
+    node_taints            = var.default_node_pool_node_taints
+    node_labels            = var.default_node_pool_node_labels
+    orchestrator_version   = var.default_node_pool_orchestrator_version
+    priority               = var.default_node_pool_priority
+    enable_host_encryption = var.default_node_pool_enable_host_encryption
+    eviction_policy        = var.default_node_pool_eviction_policy
     vnet_subnet_id         = var.nodes_subnet_id
-    max_pods               = var.default_node_pool.max_pods
-    os_disk_type           = var.default_node_pool.os_disk_type
-    os_disk_size_gb        = var.default_node_pool.os_disk_size_gb
-    enable_node_public_ip  = var.default_node_pool.enable_node_public_ip
+    max_pods               = var.default_node_pool_max_pods
+    os_disk_type           = var.default_node_pool_os_disk_type
+    os_disk_size_gb        = var.default_node_pool_os_disk_size_gb
+    enable_node_public_ip  = var.default_node_pool_enable_node_public_ip
   }
 
   # Defaults for Linux profile

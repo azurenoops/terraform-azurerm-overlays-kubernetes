@@ -12,5 +12,9 @@ terraform {
       source  = "azurenoops/azurenoopsutils"
       version = "~> 1.0.4"
     }
+    azurecaf = {
+      source = "aztfmod/azurecaf"
+      version = "2.0.0-preview3"
+    }
   }
 }

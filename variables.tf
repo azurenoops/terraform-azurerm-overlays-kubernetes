@@ -5,21 +5,25 @@
 ###########################
 # Global Configuration   ##
 ###########################
+/*
 variable "aks_name" {
   description = "Name of the AKS cluster"
   type        = string
   default     = "anoa-aks"
 }
+
 variable "location" {
   description = "Azure region in which instance will be hosted"
   type        = string
   default     = "usgovarizona"
 }
+
 variable "deploy_environment" {
   description = "Name of the workload's environnement"
   type        = string
   default     = "dev"
 }
+
 variable "workload_name" {
   description = "Name of the workload_name"
   type        = string
@@ -31,6 +35,7 @@ variable "org_name" {
   type        = string
   default     = "anoa"
 }
+*/
 variable "environment" {
   description = "The Terraform backend environment e.g. public or usgovernment"
   type        = string
@@ -41,7 +46,7 @@ variable "environment" {
 #######################
 
 
-
+/*
 variable "use_location_short_name" {
   description = "Use short location name for resources naming (ie eastus -> eus). Default is true. If set to false, the full cli location name will be used. if custom naming is set, this variable will be ignored."
   type        = bool
@@ -53,6 +58,7 @@ variable "existing_resource_group_name" {
   type        = string
   default     = null
 }
+*/
 
 ########################
 # AKS Configuration   ##
@@ -109,7 +115,7 @@ variable "sku_tier" {
     error_message = "The sku tier is invalid."
   }
 }
-
+/*
 variable "kubernetes_version" {
   description = "Specifies the AKS Kubernetes version"
   default     = "1.21.1"
@@ -127,7 +133,7 @@ variable "default_node_pool_availability_zones" {
   default     = ["1", "2", "3"]
   type        = list(string)
 }
-
+*/
 variable "network_dns_service_ip" {
   description = "Specifies the DNS service IP"
   default     = "10.2.0.10"
@@ -156,13 +162,13 @@ variable "outbound_type" {
     error_message = "The outbound type is invalid."
   }
 }
-
+/*
 variable "default_node_pool_name" {
   description = "Specifies the name of the default node pool"
   default     =  "system"
   type        = string
 }
-
+*/
 variable "default_node_pool_subnet_name" {
   description = "Specifies the name of the subnet that hosts the default node pool"
   default     =  "SystemSubnet"
@@ -174,7 +180,7 @@ variable "default_node_pool_subnet_address_prefix" {
   default     =  ["10.0.0.0/20"]
   type        = list(string)
 }
-
+/*
 variable "default_node_pool_enable_auto_scaling" {
   description = "(Optional) Whether to enable auto-scaler. Defaults to false."
   type          = bool
@@ -234,6 +240,7 @@ variable "default_node_pool_node_count" {
   type          = number
   default       = 3
 }
+*/
 
 variable "additional_node_pool_subnet_name" {
   description = "Specifies the name of the subnet that hosts the default node pool"
@@ -361,6 +368,12 @@ variable "log_analytics_retention_days" {
   default     = 30
 }
 
+variable "vnet_id"{
+  description = "(Optional) The ID of the Virtual Network where the Kubernetes Cluster should exist. Changing this forces a new resource to be created."
+  type        = string
+  default     = " df76dadd-739c-4204-8c69-70821c509926"
+}
+/*
 variable "vnet_subnet_id" {
   description = "(Optional) The ID of a Subnet where the Kubernetes Node Pool should exist. Changing this forces a new resource to be created."
   type        = string
@@ -377,6 +390,7 @@ variable "tags" {
   description = "(Optional) Specifies the tags of the bastion host"
   default     = {}
 }
+*/
 
 variable "oms_agent" {
   description = "Specifies the OMS agent addon configuration."
@@ -407,13 +421,13 @@ variable "ingress_application_gateway" {
     subnet_id    = null
   }
 }
-
+/*
 variable "admin_username" {
   description = "(Required) Specifies the Admin Username for the AKS cluster worker nodes. Changing this forces a new resource to be created."
   type        = string
   default     = "azadmin"
 }
-
+*/
 variable "ssh_public_key" {
   description = "(Required) Specifies the SSH public key used to access the cluster. Changing this forces a new resource to be created."
   type        = string
@@ -431,7 +445,7 @@ variable "vertical_pod_autoscaler_enabled" {
   type        = bool
   default     = true
 }
-
+/*
 variable "workload_identity_enabled" {
   description = "(Optional) Specifies whether Azure AD Workload Identity should be enabled for the Cluster. Defaults to false."
   type        = bool
@@ -467,3 +481,4 @@ variable "http_application_routing_enabled" {
   type        = bool
   default     = false
 }
+*/

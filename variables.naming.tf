@@ -21,14 +21,14 @@ variable "use_naming" {
   type        = bool
   default     = true
 }
-
+/*
 # Custom naming override
 variable "custom_resource_group_name" {
   description = "The name of the custom resource group to create. If not set, the name will be generated using the `org_name`, `workload_name`, `deploy_environment` and `environment` variables."
   type        = string
   default     = null
 }
-
+*/
 variable "aadpodidentity_custom_name" {
   description = "Custom name for aad pod identity MSI"
   type        = string
@@ -51,4 +51,10 @@ variable "appgw_user_assigned_identity_custom_name" {
   description = "Custom name for the application gateway user assigned identity resource"
   type        = string
   default     = null
+}
+
+variable "custom_appgw_name" {
+  description = "Custom name for the application gateway resource"
+  type        = string
+  default     = "appgw_name"
 }
