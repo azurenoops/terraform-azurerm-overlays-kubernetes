@@ -14,7 +14,6 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   name                             = var.aks_name
   kubernetes_version               = var.kubernetes_version
   dns_prefix                       = var.dns_prefix
-  
   private_cluster_enabled          = var.private_cluster_enabled
   automatic_channel_upgrade        = var.automatic_channel_upgrade
   sku_tier                         = var.sku_tier
