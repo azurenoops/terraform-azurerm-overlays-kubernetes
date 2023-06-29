@@ -23,3 +23,13 @@ variable "deploy_environment" {
     type = string
     default = "dev"
 }
+
+variable "network_plugin" {
+    type = string
+    default = "azure"
+}
+  
+variable "network_policy" {
+    type = string
+    default = "calico"
+}

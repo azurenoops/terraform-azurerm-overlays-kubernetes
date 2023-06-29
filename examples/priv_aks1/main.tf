@@ -3,25 +3,32 @@
 # Azurerm provider configuration
 provider "azurerm" {
   environment = "USGovernment"
-  skip_provider_registration = "true"
+  skip_provider_registration                   = "true"
   features {
     resource_group {
-      prevent_deletion_if_contains_resources = false
+      prevent_deletion_if_contains_resources   = false
     }
   }
 }
 
+/*
 #gather info of existing wl spoke vnet & rg
 data "azurerm_virtual_network" "workload_vnet" {
   name                = "tf-anoa2-usgaz-aks-dev-vnet"
   resource_group_name = "tf-anoa2-usgaz-aks-dev-rg"
 }
 
+
 data "azurerm_log_analytics_workspace" "hub-logws" {
   name                = "tf-anoa-usgaz-ops-mgt-logging-dev-log"
   resource_group_name = "tf-anoa-usgaz-ops-mgt-logging-dev-rg"
 }
 
+data azurerm_kubernetes_cluster "aks_cluster" {
+  name                = "tf-anoa-usgaz-ops-mgt-logging-dev-aks"
+  resource_group_name = "tf-anoa-usgaz-ops-mgt-logging-dev-rg"
+}
+*/
 
 module "aks_cluster" {
     source = "../.."
@@ -31,4 +38,5 @@ module "aks_cluster" {
     org_name                        = var.org_name
     deploy_environment              = var.deploy_environment
     workload_name                   = var.workload_name
-    }
+      
+}

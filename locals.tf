@@ -18,7 +18,8 @@ locals {
     priority               = var.default_node_pool_priority
     enable_host_encryption = var.default_node_pool_enable_host_encryption
     eviction_policy        = var.default_node_pool_eviction_policy
-    vnet_subnet_id         = var.nodes_subnet_id
+    vnet_subnet_id         = var.vnet_subnet_id
+    pod_subnet_id          = var.pod_subnet_id
     max_pods               = var.default_node_pool_max_pods
     os_disk_type           = var.default_node_pool_os_disk_type
     os_disk_size_gb        = var.default_node_pool_os_disk_size_gb
@@ -47,6 +48,8 @@ locals {
   private_dns_zone              = var.private_dns_zone_type == "Custom" ? var.private_dns_zone_id : var.private_dns_zone_type
   is_custom_dns_private_cluster = var.private_dns_zone_type == "Custom" && var.private_cluster_enabled
 
+  load_balancer_sku = var.load_balancer_sku
+/*
   default_no_proxy_url_list = [
     data.azurerm_virtual_network.aks_vnet[*].address_space,
     var.aks_pod_cidr,
@@ -58,4 +61,11 @@ locals {
     "168.63.129.16",   # Azure platform global VIP (https://learn.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16)
     "169.254.169.254", # Azure Instance Metadata Service (IMDS)
   ]
+  */
+#if customer set a kubernets version then use that, else use the latest version available in AKS
+aks_version = coalesce(var.kubernetes_version, data.azurerm_kubernetes_service_versions.current.latest_version)
+
+log_analytics_workspace_id = var.log_analytics_workspace_id != "" ? var.log_analytics_workspace_id : null
+
+
 }

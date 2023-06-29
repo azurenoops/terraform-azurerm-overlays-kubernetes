@@ -12,8 +12,9 @@ variable "aks_resource_group_name" {
   default = "aks"
 }
 variable "kubernetes_version" {
+  description = "Kubernetes version to deploy. Will deploy newest AKS version if this value is not set."
   type = string
-  default = "1.24.3"  
+  default = null 
 }
 
 variable "private_dns_zone_type" {
@@ -28,7 +29,7 @@ variable "private_dns_zone_id" {
   
 variable "log_analytics_workspace_id" {
   type = string
-  default = "3d1e7278-e60a-416a-a48e-1186efab9b66"
+  default = "subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa-usgaz-ops-mgt-logging-dev-rg/providers/Microsoft.OperationalInsights/workspaces/tf-anoa-usgaz-ops-mgt-logging-dev-log"
 }
 
 variable "aks_pod_cidr" {
@@ -44,6 +45,11 @@ variable "docker_bridge_cidr" {
 variable "service_cidr" {
   type = string
   default = ""
+}
+
+variable "load_balancer_sku" {
+  type = string
+  default = "Basic"
 }
 
 /*
@@ -76,19 +82,19 @@ variable "oidc_issuer_enabled" {
 }
 variable "open_service_mesh_enabled" {
   type = bool
-  default = true
+  default = false
 }
 variable "image_cleaner_enabled" {
   type = bool
-  default = true
+  default = false
 }
 variable "azure_policy_enabled" {
   type = bool
-  default = true 
+  default = false 
 }
 variable "http_application_routing_enabled" {
   type = bool
-  default = true
+  default = false
 }
 
 variable "default_node_pool" {
@@ -119,19 +125,20 @@ variable "default_node_pool_vm_size" {
   type = string
   default = "Standard_D2s_v3"
 }
+
 variable "vnet_subnet_id" {
   type = string
-  default = "vnet_subnet_id"
+  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-default-snet"
 }
 
 variable "pod_subnet_id" {
   type = string
-  default = "pod_subnet_id"
+  default = null
 }
 
 variable "nodes_subnet_id" {
   type = string
-  default = "nodes_subnet_id"
+  default = null
 }
 
 variable "default_node_pool_availability_zones" {
@@ -153,7 +160,7 @@ variable "default_node_pool_node_taints" {
 
 variable "default_node_pool_enable_auto_scaling" {
   type = bool
-  default = true
+  default = false
 }
 
 variable "default_node_pool_enable_host_encryption" {
@@ -178,12 +185,12 @@ variable "default_node_pool_max_pods" {
 
 variable "default_node_pool_max_count" {
   type = number
-  default = 5
+  default = null
 }
 
 variable "default_node_pool_min_count" {
   type = number
-  default = 1
+  default = null
 }
 
 variable "default_node_pool_node_count" {
@@ -193,7 +200,7 @@ variable "default_node_pool_node_count" {
 
 variable default_node_pool_os_disk_type {
   type = string
-  default = "Ephemeral"
+  default = "Managed"
 }
 
 

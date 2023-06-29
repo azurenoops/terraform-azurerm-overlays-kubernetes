@@ -73,7 +73,7 @@ variable "dns_prefix" {
 variable "private_cluster_enabled" {
   description = "Should this Kubernetes Cluster have its API server only exposed on internal IP addresses? This provides a Private IP Address for the Kubernetes API on the Virtual Network where the Kubernetes Cluster is located. Defaults to false. Changing this forces a new resource to be created."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "azure_rbac_enabled" {
@@ -136,19 +136,25 @@ variable "default_node_pool_availability_zones" {
 */
 variable "network_dns_service_ip" {
   description = "Specifies the DNS service IP"
-  default     = "10.2.0.10"
+  default     = "10.0.102.10"
   type        = string
 }
 
 variable "network_service_cidr" {
   description = "Specifies the service CIDR"
-  default     = "10.2.0.0/24"
+  default     = "10.0.102.0/24"
   type        = string
 }
 
 variable "network_plugin" {
   description = "Specifies the network plugin of the AKS cluster"
   default     = "azure"
+  type        = string
+}
+
+variable "network_policy" {
+  description = "Specifies the network policy of the AKS cluster"
+  default     = "calico"
   type        = string
 }
 
@@ -317,7 +323,7 @@ variable "additional_node_pool_node_taints" {
 variable "additional_node_pool_os_disk_type" {
   description = "(Optional) The type of disk which should be used for the Operating System. Possible values are Ephemeral and Managed. Defaults to Managed. Changing this forces a new resource to be created."
   type          = string
-  default       = "Ephemeral"
+  default       = "Managed"
 } 
 
 variable "additional_node_pool_os_type" {
@@ -437,13 +443,13 @@ variable "ssh_public_key" {
 variable "keda_enabled" {
   description = "(Optional) Specifies whether KEDA Autoscaler can be used for workloads."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "vertical_pod_autoscaler_enabled" {
   description = "(Optional) Specifies whether Vertical Pod Autoscaler should be enabled."
   type        = bool
-  default     = true
+  default     = false
 }
 /*
 variable "workload_identity_enabled" {
@@ -467,18 +473,17 @@ variable "open_service_mesh_enabled" {
 variable "image_cleaner_enabled" {
   description = "(Optional) Specifies whether Image Cleaner is enabled."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "azure_policy_enabled" {
   description = "(Optional) Should the Azure Policy Add-On be enabled? For more details please visit Understand Azure Policy for Azure Kubernetes Service"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "http_application_routing_enabled" {
   description = "(Optional) Should HTTP Application Routing be enabled?"
   type        = bool
   default     = false
-}
 */
