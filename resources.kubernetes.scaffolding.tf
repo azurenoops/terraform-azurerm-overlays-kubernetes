@@ -46,15 +46,4 @@ module "mod_scaffold_rg" {
     DeployedBy = format("AzureNoOpsTF [%s]", terraform.workspace)
   }) # Tags to be applied to all resources
 }
-/*
-output "rg_name" {
-  value = module.mod_scaffold_rg.resource_group_name[]
-         #module.mod_scaffold_rg.rg_name
-}
 
-
-output "rg_id" {
-  value = module.mod_scaffold_rg.rg_id[]
-          #module.mod_scaffold_rg.resource_group_id[0]
-}
-*/

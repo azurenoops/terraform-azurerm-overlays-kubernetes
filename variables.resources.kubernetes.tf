@@ -93,6 +93,7 @@ variable "azure_policy_enabled" {
   default = false 
 }
 variable "http_application_routing_enabled" {
+  description = "At this time HTTP Application Routing is not supported in Azure China or Azure US Government."
   type = bool
   default = false
 }
@@ -128,12 +129,12 @@ variable "default_node_pool_vm_size" {
 
 variable "vnet_subnet_id" {
   type = string
-  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-default-snet"
+  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-akssystem-snet"
 }
 
 variable "pod_subnet_id" {
   type = string
-  default = null
+  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-aksworker-snet"
 }
 
 variable "nodes_subnet_id" {

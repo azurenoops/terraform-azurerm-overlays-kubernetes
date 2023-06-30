@@ -10,7 +10,7 @@ variable "existing_resource_group_name" {
 
 variable "org_name" {
     type = string
-    default = "anoa"
+    default = "tf-anoa"
 }
 
 variable "workload_name" {

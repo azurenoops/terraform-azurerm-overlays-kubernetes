@@ -11,22 +11,20 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   kubernetes_version               = local.aks_version
   dns_prefix                       = var.dns_prefix
   private_cluster_enabled          = var.private_cluster_enabled
- # automatic_channel_upgrade        = var.automatic_channel_upgrade
- #sku_tier                         = var.sku_tier
- # workload_identity_enabled        = var.workload_identity_enabled
- # oidc_issuer_enabled              = var.oidc_issuer_enabled
- # open_service_mesh_enabled        = var.open_service_mesh_enabled
- # image_cleaner_enabled            = var.image_cleaner_enabled
+  automatic_channel_upgrade        = var.automatic_channel_upgrade
+  sku_tier                         = var.sku_tier
+  workload_identity_enabled        = var.workload_identity_enabled
+  oidc_issuer_enabled              = var.oidc_issuer_enabled
+  open_service_mesh_enabled        = var.open_service_mesh_enabled
+  image_cleaner_enabled            = var.image_cleaner_enabled
   azure_policy_enabled             = var.azure_policy_enabled
- # http_application_routing_enabled = var.http_application_routing_enabled
   
-
   default_node_pool {
     name                    = var.default_node_pool_name
     node_count              = var.default_node_pool_node_count
     vm_size                 = var.default_node_pool_vm_size
     vnet_subnet_id          = var.vnet_subnet_id
-    #pod_subnet_id           = var.pod_subnet_id
+    pod_subnet_id           = var.pod_subnet_id
     #zones                   = var.default_node_pool_availability_zones
     #node_labels             = var.default_node_pool_node_labels
     #node_taints             = var.default_node_pool_node_taints
