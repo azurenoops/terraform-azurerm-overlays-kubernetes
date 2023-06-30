@@ -1,58 +1,12 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
-
-
-###########################
-# Global Configuration   ##
-###########################
-variable "aks_name" {
-  description = "Name of the AKS cluster"
-  type        = string
-  default     = "anoa-aks"
-}
-variable "location" {
-  description = "Azure region in which instance will be hosted"
-  type        = string
-  default     = "usgovarizona"
-}
-variable "deploy_environment" {
-  description = "Name of the workload's environnement"
-  type        = string
-  default     = "dev"
-}
-variable "workload_name" {
-  description = "Name of the workload_name"
-  type        = string
-  default     = "dev"
-}
-
-variable "org_name" {
-  description = "Name of the organization"
-  type        = string
-  default     = "anoa"
-}
 variable "environment" {
   description = "The Terraform backend environment e.g. public or usgovernment"
   type        = string
   default     = "usgovernment"
 }
+
 #######################
 # RG Configuration   ##
 #######################
-
-
-
-variable "use_location_short_name" {
-  description = "Use short location name for resources naming (ie eastus -> eus). Default is true. If set to false, the full cli location name will be used. if custom naming is set, this variable will be ignored."
-  type        = bool
-  default     = true
-}
-
-variable "existing_resource_group_name" {
-  description = "The name of the existing resource group to use. If not set, the name will be generated using the `org_name`, `workload_name`, `deploy_environment` and `environment` variables."
-  type        = string
-  default     = null
-}
 
 ########################
 # AKS Configuration   ##
@@ -67,7 +21,7 @@ variable "dns_prefix" {
 variable "private_cluster_enabled" {
   description = "Should this Kubernetes Cluster have its API server only exposed on internal IP addresses? This provides a Private IP Address for the Kubernetes API on the Virtual Network where the Kubernetes Cluster is located. Defaults to false. Changing this forces a new resource to be created."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "azure_rbac_enabled" {
@@ -89,7 +43,7 @@ variable "role_based_access_control_enabled" {
 }
 
 variable "automatic_channel_upgrade" {
-  description = "(Optional) The upgrade channel for this Kubernetes Cluster. Possible values are patch, rapid, and stable."
+  description = "(Optional) The upgrade channel for this Kubernetes Cluster. Possible values are patch, node-image, rapid, and stable."
   default     = "stable"
   type        = string
 
@@ -110,39 +64,27 @@ variable "sku_tier" {
   }
 }
 
-variable "kubernetes_version" {
-  description = "Specifies the AKS Kubernetes version"
-  default     = "1.21.1"
-  type        = string
-}
-
-variable "default_node_pool_vm_size" {
-  description = "Specifies the vm size of the default node pool"
-  default     = "Standard_F8s_v2"
-  type        = string
-}
-
-variable "default_node_pool_availability_zones" {
-  description = "Specifies the availability zones of the default node pool"
-  default     = ["1", "2", "3"]
-  type        = list(string)
-}
-
 variable "network_dns_service_ip" {
   description = "Specifies the DNS service IP"
-  default     = "10.2.0.10"
+  default     = "10.0.102.10"
   type        = string
 }
 
 variable "network_service_cidr" {
   description = "Specifies the service CIDR"
-  default     = "10.2.0.0/24"
+  default     = "10.0.102.0/24"
   type        = string
 }
 
 variable "network_plugin" {
   description = "Specifies the network plugin of the AKS cluster"
   default     = "azure"
+  type        = string
+}
+
+variable "network_policy" {
+  description = "Specifies the network policy of the AKS cluster"
+  default     = "calico"
   type        = string
 }
 
@@ -157,12 +99,6 @@ variable "outbound_type" {
   }
 }
 
-variable "default_node_pool_name" {
-  description = "Specifies the name of the default node pool"
-  default     =  "system"
-  type        = string
-}
-
 variable "default_node_pool_subnet_name" {
   description = "Specifies the name of the subnet that hosts the default node pool"
   default     =  "SystemSubnet"
@@ -173,66 +109,6 @@ variable "default_node_pool_subnet_address_prefix" {
   description = "Specifies the address prefix of the subnet that hosts the default node pool"
   default     =  ["10.0.0.0/20"]
   type        = list(string)
-}
-
-variable "default_node_pool_enable_auto_scaling" {
-  description = "(Optional) Whether to enable auto-scaler. Defaults to false."
-  type          = bool
-  default       = true
-}
-
-variable "default_node_pool_enable_host_encryption" {
-  description = "(Optional) Should the nodes in this Node Pool have host encryption enabled? Defaults to false."
-  type          = bool
-  default       = false
-} 
-
-variable "default_node_pool_enable_node_public_ip" {
-  description = "(Optional) Should each node have a Public IP Address? Defaults to false. Changing this forces a new resource to be created."
-  type          = bool
-  default       = false
-} 
-
-variable "default_node_pool_max_pods" {
-  description = "(Optional) The maximum number of pods that can run on each agent. Changing this forces a new resource to be created."
-  type          = number
-  default       = 50
-}
-
-variable "default_node_pool_node_labels" {
-  description = "(Optional) A list of Kubernetes taints which should be applied to nodes in the agent pool (e.g key=value:NoSchedule). Changing this forces a new resource to be created."
-  type          = map(any)
-  default       = {}
-} 
-
-variable "default_node_pool_node_taints" {
-  description = "(Optional) A map of Kubernetes labels which should be applied to nodes in this Node Pool. Changing this forces a new resource to be created."
-  type          = list(string)
-  default       = []
-} 
-
-variable "default_node_pool_os_disk_type" {
-  description = "(Optional) The type of disk which should be used for the Operating System. Possible values are Ephemeral and Managed. Defaults to Managed. Changing this forces a new resource to be created."
-  type          = string
-  default       = "Ephemeral"
-} 
-
-variable "default_node_pool_max_count" {
-  description = "(Required) The maximum number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be greater than or equal to min_count."
-  type          = number
-  default       = 10
-}
-
-variable "default_node_pool_min_count" {
-  description = "(Required) The minimum number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be less than or equal to max_count."
-  type          = number
-  default       = 3
-}
-
-variable "default_node_pool_node_count" {
-  description = "(Optional) The initial number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be a value in the range min_count - max_count."
-  type          = number
-  default       = 3
 }
 
 variable "additional_node_pool_subnet_name" {
@@ -310,7 +186,7 @@ variable "additional_node_pool_node_taints" {
 variable "additional_node_pool_os_disk_type" {
   description = "(Optional) The type of disk which should be used for the Operating System. Possible values are Ephemeral and Managed. Defaults to Managed. Changing this forces a new resource to be created."
   type          = string
-  default       = "Ephemeral"
+  default       = "Managed"
 } 
 
 variable "additional_node_pool_os_type" {
@@ -361,21 +237,10 @@ variable "log_analytics_retention_days" {
   default     = 30
 }
 
-variable "vnet_subnet_id" {
-  description = "(Optional) The ID of a Subnet where the Kubernetes Node Pool should exist. Changing this forces a new resource to be created."
+variable "vnet_id"{
+  description = "(Optional) The ID of the Virtual Network where the Kubernetes Cluster should exist. Changing this forces a new resource to be created."
   type        = string
-  default     = null
-}
-
-variable "pod_subnet_id" {
-  description = "(Optional) The ID of the Subnet where the pods in the default Node Pool should exist. Changing this forces a new resource to be created."
-  type          = string
-  default       = null
-}
-
-variable "tags" {
-  description = "(Optional) Specifies the tags of the bastion host"
-  default     = {}
+  default     = " df76dadd-739c-4204-8c69-70821c509926"
 }
 
 variable "oms_agent" {
@@ -390,30 +255,6 @@ variable "oms_agent" {
   }
 }
 
-variable "ingress_application_gateway" {
-  description = "Specifies the Application Gateway Ingress Controller addon configuration."
-  type        = object({
-    enabled      = bool
-    gateway_id   = string
-    gateway_name = string
-    subnet_cidr  = string
-    subnet_id    = string
-  })
-  default     = {
-    enabled      = false           
-    gateway_id   = null
-    gateway_name = null
-    subnet_cidr  = null
-    subnet_id    = null
-  }
-}
-
-variable "admin_username" {
-  description = "(Required) Specifies the Admin Username for the AKS cluster worker nodes. Changing this forces a new resource to be created."
-  type        = string
-  default     = "azadmin"
-}
-
 variable "ssh_public_key" {
   description = "(Required) Specifies the SSH public key used to access the cluster. Changing this forces a new resource to be created."
   type        = string
@@ -423,47 +264,11 @@ variable "ssh_public_key" {
 variable "keda_enabled" {
   description = "(Optional) Specifies whether KEDA Autoscaler can be used for workloads."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "vertical_pod_autoscaler_enabled" {
   description = "(Optional) Specifies whether Vertical Pod Autoscaler should be enabled."
-  type        = bool
-  default     = true
-}
-
-variable "workload_identity_enabled" {
-  description = "(Optional) Specifies whether Azure AD Workload Identity should be enabled for the Cluster. Defaults to false."
-  type        = bool
-  default     = true
-}
-
-variable "oidc_issuer_enabled" {
-  description = "(Optional) Enable or Disable the OIDC issuer URL."
-  type        = bool
-  default     = true
-}
-
-variable "open_service_mesh_enabled" {
-  description = "(Optional) Is Open Service Mesh enabled? For more details, please visit Open Service Mesh for AKS."
-  type        = bool
-  default     = true
-}
-
-variable "image_cleaner_enabled" {
-  description = "(Optional) Specifies whether Image Cleaner is enabled."
-  type        = bool
-  default     = true
-}
-
-variable "azure_policy_enabled" {
-  description = "(Optional) Should the Azure Policy Add-On be enabled? For more details please visit Understand Azure Policy for Azure Kubernetes Service"
-  type        = bool
-  default     = true
-}
-
-variable "http_application_routing_enabled" {
-  description = "(Optional) Should HTTP Application Routing be enabled?"
   type        = bool
   default     = false
 }

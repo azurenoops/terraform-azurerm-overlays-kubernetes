@@ -12,6 +12,13 @@ module "mod_azregions" {
   azure_region = var.location
 }
 
+module "mod_azure_region_lookup" {
+  source  = "azurenoops/overlays-azregions-lookup/azurerm"
+  version = "~> 1.0.1"
+
+  azure_region = var.location
+}
+
 # By default, this module will not create a resource group
 # provide a name to use an existing resource group, specify the existing resource group name,
 # and set the argument to `create_resource_group = false`. Location will be same as existing RG.
@@ -26,9 +33,7 @@ data "azurerm_resource_group" "rgrp" {
 module "mod_scaffold_rg" {
   source  = "azurenoops/overlays-resource-group/azurerm"
   version = "~> 1.0.1"
-
   count = var.create_resource_group ? 1 : 0
-
   location                = module.mod_azregions.location_cli
   use_location_short_name = var.use_location_short_name # Use the short location name in the resource group name
   org_name                = var.org_name
@@ -41,13 +46,4 @@ module "mod_scaffold_rg" {
     DeployedBy = format("AzureNoOpsTF [%s]", terraform.workspace)
   }) # Tags to be applied to all resources
 }
-
-output "rg_name" {
-  value = module.mod_scaffold_rg.rg_name
-}
-/*
-output "rg_id" {
-  value = module.mod_scaffold_rg.rg_id
-}
-*/
 
