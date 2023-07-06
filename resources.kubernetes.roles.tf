@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 
 resource "azurerm_role_assignment" "network_contributor" {
   scope                = local.resource_group_name
