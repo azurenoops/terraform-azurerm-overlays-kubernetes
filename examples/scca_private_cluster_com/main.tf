@@ -2,10 +2,14 @@
 # Licensed under the MIT License.
 
 module "kubernetes" {
-  source = "../.."
+  source     = "../.."
+  depends_on = [module.mod_workload_network]
   
-  location            = module.mod_azure_region_lookup.location_cli
-  resource_group_name = module.resource_group.name
+  environment = var.environment
+  deploy_environment = var.deploy_environment
+  org_name = var.org_name
+  workload_name = "aks"
+  location = var.location
 
   identity_type = "UserAssigned"
 
@@ -16,13 +20,13 @@ module "kubernetes" {
   virtual_network = {
     subnets = {
       private = {
-        id = module.mod_workload_network.subnets["iaas-private"].id
+        id = module.mod_workload_network.subnet_ids["iaas-private"].id
       }
       public = {
-        id = module.virtual_network.subnets["iaas-public"].id
+        id = module.mod_workload_network.subnet_ids["iaas-public"].id
       }
     }
-    route_table_id = module.virtual_network.route_tables["aks"].id
+    route_table_id = module.mod_workload_network.route_table_id
   }
 
   node_pools = {

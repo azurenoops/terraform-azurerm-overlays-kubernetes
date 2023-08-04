@@ -5,37 +5,16 @@
 # AKS Configuration   ##
 ########################
 
-variable "resource_group_name" {
-  description = "Resource group name."
-  type        = string
-}
-
-variable "location" {
-  description = "Azure region."
-  type        = string
-}
-
-variable "names" {
-  description = "Names to be applied to resources."
-  type        = map(string)
-  default     = null
-}
-
-variable "tags" {
-  description = "Tags to be applied to resources."
-  type        = map(string)
-}
-
 variable "cluster_name" {
   description = "Name of AKS cluster."
   type        = string
-  default     = null # null value will create name based on var.names
+  default     = null 
 }
 
 variable "dns_prefix" {
   description = "DNS prefix specified when creating the managed cluster."
   type        = string
-  default     = null # null value will create name based on var.names
+  default     = null 
 }
 
 variable "node_resource_group" {
@@ -164,7 +143,6 @@ variable "node_pool_defaults" {
   description = "node pool defaults"
   type = object({
     vm_size                      = string
-    availability_zones           = list(number)
     node_count                   = number
     enable_auto_scaling          = bool
     min_count                    = number
@@ -193,7 +171,6 @@ variable "node_pool_defaults" {
   })
   default = { name = null
     vm_size                      = "Standard_B2s"
-    availability_zones           = [1, 2, 3]
     node_count                   = 1
     enable_auto_scaling          = false
     min_count                    = null

@@ -8,7 +8,4 @@ locals {
   
   cluster_name        = coalesce(var.custom_cluster_name, data.azurenoopsutils_resource_name.aks.result)
   aks_identity_name   = coalesce(var.aks_user_assigned_identity_custom_name, data.azurenoopsutils_resource_name.aks_identity.result)
-  appgw_identity_name = coalesce(var.appgw_user_assigned_identity_custom_name, data.azurenoopsutils_resource_name.appgw_identity.result)
-
-  appgw_name = coalesce(var.custom_appgw_name, data.azurenoopsutils_resource_name.appgw.result)
 }

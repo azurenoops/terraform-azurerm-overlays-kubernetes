@@ -4,8 +4,8 @@
 resource "azurerm_user_assigned_identity" "aks" {
   count = (var.identity_type == "UserAssigned" && var.user_assigned_identity == null ? 1 : 0)
 
-  resource_group_name = var.resource_group_name
-  location            = var.location
+  resource_group_name = local.resource_group_name
+  location            = local.location
   name                = local.user_assigned_identity_name
 
   tags                = var.add_tags

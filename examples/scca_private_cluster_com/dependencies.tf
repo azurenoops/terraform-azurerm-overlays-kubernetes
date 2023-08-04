@@ -1,16 +1,6 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-#---------------------------------------------------------
-# Azure Region Lookup
-#----------------------------------------------------------
-module "mod_azure_region_lookup" {
-  source  = "azurenoops/overlays-azregions-lookup/azurerm"
-  version = "~> 1.0.0"
-
-  azure_region = "eastus"
-}
-
 // Resources for the Workload Spoke
 module "mod_workload_network" {
   source    = "azurenoops/overlays-workload-spoke/azurerm"
@@ -51,6 +41,9 @@ module "mod_workload_network" {
   # subnet name will be set as per Azure naming convention by defaut. expected value here is: <App or project name>
   spoke_subnets = var.wl_subnets
 
+  # Route Table Routes
+  route_table_routes = var.wl_route_table_routes
+
   # Enable Flow Logs
   # By default, this will enable flow logs for all subnets.
   enable_traffic_analytics = var.enable_traffic_analytics
@@ -77,5 +70,5 @@ module "mod_workload_network" {
   enable_resource_locks = var.enable_resource_locks
 
   # Tags
-  add_tags = local.workload_resources_tags # Tags to be applied to all resources
+  add_tags = {} # Tags to be applied to all resources
 }

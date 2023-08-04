@@ -5,13 +5,13 @@ locals {
 
   user_assigned_identity_name = (var.user_assigned_identity_name == null ? "aks-${local.cluster_name}-control-plane" : var.user_assigned_identity_name)
   
-  aks_identity_id = (var.identity_type == "SystemAssigned" ? azurerm_kubernetes_cluster.aks.identity.0.principal_id :
+  aks_identity_id = (var.identity_type == "SystemAssigned" ? azurerm_kubernetes_cluster.aks_cluster.identity.0.principal_id :
   (var.user_assigned_identity == null ? azurerm_user_assigned_identity.aks.0.principal_id : var.user_assigned_identity.principal_id))
 
   node_resource_group = (var.node_resource_group != null ? var.node_resource_group : "MC-${local.cluster_name}")
   
   node_pools            = zipmap(keys(var.node_pools), [for node_pool in values(var.node_pools) : merge(var.node_pool_defaults, node_pool)])
-  additional_node_pools = { for k, v in local.node_pools : k => v if k != var.default_node_pool_name_name }
+  additional_node_pools = { for k, v in local.node_pools : k => v if k != var.default_node_pool_name }
 
   windows_nodes = (length([for v in local.node_pools : v if lower(v.os_type) == "windows"]) > 0 ? true : false)
 
@@ -50,10 +50,10 @@ locals {
   validate_default_node_pool_name = (lower(local.node_pools[var.default_node_pool_name].os_type) != "linux" ?
   file("ERROR: default node pool type must be Linux") : null)
 
-  validate_cluster_name = ((var.cluster_name == null && var.names == null) ?
+  validate_cluster_name = ((var.cluster_name == null) ?
   file("ERROR: cluster_name or names variable must be specified.") : null)
 
-  validate_dns_prefix = ((var.dns_prefix == null && var.names == null) ?
+  validate_dns_prefix = ((var.dns_prefix == null) ?
   file("ERROR: dns_prefix or names variable must be specified.") : null)
 
   validate_critical_addons = ((length([for k, v in local.additional_node_pools : k if v.only_critical_addons_enabled == true]) > 0) ?
