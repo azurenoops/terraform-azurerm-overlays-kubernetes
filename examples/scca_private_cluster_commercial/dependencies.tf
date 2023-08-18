@@ -1,6 +1,6 @@
 
 resource "azurerm_resource_group" "aks_rg" {
-  name     = "gov-rg-aks"
+  name     = "public-aks-rg"
   location = module.mod_azure_region_lookup.location_cli
 }
 

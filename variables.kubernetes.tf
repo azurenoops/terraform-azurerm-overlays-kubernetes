@@ -8,13 +8,13 @@
 variable "cluster_name" {
   description = "Name of AKS cluster."
   type        = string
-  default     = null 
+  default     = null
 }
 
 variable "dns_prefix" {
   description = "DNS prefix specified when creating the managed cluster."
   type        = string
-  default     = null 
+  default     = null
 }
 
 variable "node_resource_group" {
@@ -253,7 +253,7 @@ and the aks user must have "Private DNS Zone Contributor" role on the private DN
 - "System" : AKS will manage the private zone and create it in the same resource group as the Node Resource Group
 - "None" : In case of None you will need to bring your own DNS server and set up resolving, otherwise cluster will have issues after provisioning.
 
-https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_dns_zone_id
+https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#`
 EOD
 }
 
@@ -318,4 +318,57 @@ variable "log_analytics_workspace_id" {
   description = "ID of the Azure Log Analytics Workspace"
   type        = string
   default     = null
+}
+
+variable "ingress_application_gateway" {
+  description = "AGIC - Azure Application Gateway Ingress Controller gateway_id/subnet_cidr/subnet_id"
+  type = object({
+    gateway_id  = string
+    subnet_cidr = string
+    subnet_id   = string
+  })
+  default = null
+
+  validation {
+    condition = (
+      var.ingress_application_gateway == null ? true :
+      ((var.ingress_application_gateway.gateway_id != null) &&
+        (var.ingress_application_gateway.gateway_id != "") &&
+        (var.ingress_application_gateway.subnet_cidr != null) &&
+        (var.ingress_application_gateway.subnet_cidr != "") &&
+        (var.ingress_application_gateway.subnet_id != null) &&
+      (var.ingress_application_gateway.subnet_id != ""))
+    )
+    error_message = "Application Gateway Ingress Controller requires gateway_id, subnet_cidr and subnet_id "
+  }
+}
+
+
+variable "azure_policy_enabled" {
+  description = "to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner"
+  type        = bool
+  default     = false
+}
+
+
+
+
+variable "key_vault_secrets_provider" {
+  description = "key vault secrets provider secret rotation enabled / secret rotation interval"
+  type = object({
+    secret_rotation_enabled  = string
+    secret_rotation_interval = string
+  })
+  default = null
+
+  validation {
+    condition = (
+      var.key_vault_secrets_provider == null ? true :
+      ((var.key_vault_secrets_provider.secret_rotation_enabled != null) &&
+        (var.key_vault_secrets_provider.secret_rotation_enabled != "") &&
+        (var.key_vault_secrets_provider.secret_rotation_interval != null) &&
+      (var.key_vault_secrets_provider.secret_rotation_interval != ""))
+    )
+    error_message = " key vault secrets provider requires both secret rotation enabled and secret rotation interval"
+  }
 }

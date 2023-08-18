@@ -5,9 +5,10 @@
 # Azure Region Lookup
 #--------------------------------------
 # This module will lookup the Azure Region and return the short name for the region
+# Az region lookup - pass the location - eus2 etc. 
 module "mod_azregions" {
   source  = "azurenoops/overlays-azregions-lookup/azurerm"
-  version = "~> 1.0.0"
+  version = "~> 1.0"
 
   azure_region = var.location
 }
@@ -20,12 +21,14 @@ module "mod_azregions" {
 #----------------------------------------------------------
 data "azurerm_resource_group" "rgrp" {
   count = var.create_aks_resource_group == false ? 1 : 0
-  name  = var.existing_resource_group_name
+
+
+  name = var.existing_resource_group_name
 }
 
 module "mod_scaffold_rg" {
   source  = "azurenoops/overlays-resource-group/azurerm"
-  version = "~> 1.0.1"
+  version = "~> 1.0"
 
   count = var.create_aks_resource_group ? 1 : 0
 

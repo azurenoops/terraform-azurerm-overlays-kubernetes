@@ -4,12 +4,16 @@
 locals {
 
   user_assigned_identity_name = (var.user_assigned_identity_name == null ? "aks-${local.cluster_name}-control-plane" : var.user_assigned_identity_name)
-  
+
   aks_identity_id = (var.identity_type == "SystemAssigned" ? azurerm_kubernetes_cluster.aks_cluster.identity.0.principal_id :
   (var.user_assigned_identity == null ? azurerm_user_assigned_identity.aks.0.principal_id : var.user_assigned_identity.principal_id))
 
   node_resource_group = (var.node_resource_group != null ? var.node_resource_group : "MC-${local.cluster_name}")
-  
+
+  dns_prefix          = var.dns_prefix
+  private_dns_zone_id = var.private_dns_zone_id
+
+
   node_pools            = zipmap(keys(var.node_pools), [for node_pool in values(var.node_pools) : merge(var.node_pool_defaults, node_pool)])
   additional_node_pools = { for k, v in local.node_pools : k => v if k != var.default_node_pool_name }
 
@@ -31,7 +35,7 @@ locals {
     os_disk_size_gb = 256
   }
 
-  invalid_node_pool_attributes = join(",", flatten([for np in values(var.node_pools) : [for k, v in np : k if !(contains(keys(var.node_pool_defaults), k))]]))
+  /* invalid_node_pool_attributes = join(",", flatten([for np in values(var.node_pools) : [for k, v in np : k if !(contains(keys(var.node_pool_defaults), k))]]))
   validate_node_pool_attributes = (length(local.invalid_node_pool_attributes) > 0 ?
   file("ERROR: invalid node pool attribute:  ${local.invalid_node_pool_attributes}") : null)
 
@@ -60,5 +64,5 @@ locals {
   file("ERROR: node pool attribute only_critical_addons_enabled can only be set to true for the default node pool") : null)
 
   validate_network_policy = ((var.network_policy == "azure" && var.network_plugin != "azure") ?
-  file("ERROR: When network_policy is set to azure, the network_plugin field can only be set to azure.") : null)
+  file("ERROR: When network_policy is set to azure, the network_plugin field can only be set to azure.") : null) */
 }
