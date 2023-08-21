@@ -1,3 +1,7 @@
-#output "echo_text" {
-#  value = module.echo.echo_text
-#}
+output "id" {
+  value = module.aks_cluster.id
+}
+
+output "name" {
+  value = module.aks_cluster.name
+}
