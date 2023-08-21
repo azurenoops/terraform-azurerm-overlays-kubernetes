@@ -1,14 +1,22 @@
+<<<<<<< HEAD
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
 resource "azurerm_user_assigned_identity" "aks" {
   count = (var.identity_type == "UserAssigned" && var.user_assigned_identity == null ? 1 : 0)
 
+=======
+resource "azurerm_user_assigned_identity" "aks_identity" {
+>>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98
   resource_group_name = local.resource_group_name
   location            = local.location
   name                = local.user_assigned_identity_name
 
+<<<<<<< HEAD
   tags                = var.add_tags
+=======
+  name = "${var.aks_name}Identity"
+>>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98
 
   lifecycle {
     ignore_changes = [

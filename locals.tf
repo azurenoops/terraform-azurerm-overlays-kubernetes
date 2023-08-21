@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 
 locals {
+<<<<<<< HEAD
 
   user_assigned_identity_name = (var.user_assigned_identity_name == null ? "aks-${local.cluster_name}-control-plane" : var.user_assigned_identity_name)
 
@@ -20,6 +21,31 @@ locals {
   windows_nodes = (length([for v in local.node_pools : v if lower(v.os_type) == "windows"]) > 0 ? true : false)
 
   api_server_authorized_ip_ranges = (var.api_server_authorized_ip_ranges == null ? null : values(var.api_server_authorized_ip_ranges))
+=======
+  default_agent_profile = {
+    name                   = var.default_node_pool_name
+    node_count             = var.default_node_pool_node_count
+    vm_size                = var.default_node_pool_vm_size
+    os_type                = var.default_node_pool_os_type
+    zones                  = var.default_node_pool_zones
+    enable_auto_scaling    = var.default_node_pool_enable_auto_scaling
+    min_count              = var.default_node_pool_min_count
+    max_count              = var.default_node_pool_max_count
+    type                   = var.default_node_pool_type
+    node_taints            = var.default_node_pool_node_taints
+    node_labels            = var.default_node_pool_node_labels
+    orchestrator_version   = var.default_node_pool_orchestrator_version
+    priority               = var.default_node_pool_priority
+    enable_host_encryption = var.default_node_pool_enable_host_encryption
+    eviction_policy        = var.default_node_pool_eviction_policy
+    vnet_subnet_id         = var.vnet_subnet_id
+    pod_subnet_id          = var.pod_subnet_id
+    max_pods               = var.default_node_pool_max_pods
+    os_disk_type           = var.default_node_pool_os_disk_type
+    os_disk_size_gb        = var.default_node_pool_os_disk_size_gb
+    enable_node_public_ip  = var.default_node_pool_enable_node_public_ip
+  }
+>>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98
 
   # Defaults for Linux profile
   # Generally smaller images so can run more pods and require smaller HD
@@ -45,6 +71,7 @@ locals {
   validate_windows_config = (local.windows_nodes && var.windows_profile == null ?
   file("ERROR: windows node pools require a windows_profile") : null)
 
+<<<<<<< HEAD
   validate_virtual_network_support = (var.identity_type == "SystemAssigned" && var.virtual_network != null ?
   file("ERROR: virtual network unavailable with SystemAssigned identity type") : null)
 
@@ -65,4 +92,26 @@ locals {
 
   validate_network_policy = ((var.network_policy == "azure" && var.network_plugin != "azure") ?
   file("ERROR: When network_policy is set to azure, the network_plugin field can only be set to azure.") : null) */
+=======
+  load_balancer_sku = var.load_balancer_sku
+/*
+  default_no_proxy_url_list = [
+    data.azurerm_virtual_network.aks_vnet[*].address_space,
+    var.aks_pod_cidr,
+    var.docker_bridge_cidr,
+    var.service_cidr,
+    "localhost",
+    "konnectivity",
+    "127.0.0.1",       # Localhost
+    "168.63.129.16",   # Azure platform global VIP (https://learn.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16)
+    "169.254.169.254", # Azure Instance Metadata Service (IMDS)
+  ]
+  */
+#if customer set a kubernets version then use that, else use the latest version available in AKS
+aks_version = coalesce(var.kubernetes_version, data.azurerm_kubernetes_service_versions.current.latest_version)
+
+log_analytics_workspace_id = var.log_analytics_workspace_id != "" ? var.log_analytics_workspace_id : null
+
+
+>>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98
 }
