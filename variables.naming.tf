@@ -35,8 +35,8 @@ variable "aadpodidentity_custom_name" {
   default     = "aad-pod-identity"
 }
 
-variable "custom_cluster_name" {
-  description = "Custom cluster name"
+variable "custom_aks_name" {
+  description = "Custom AKS name"
   type        = string
   default     = ""
 }

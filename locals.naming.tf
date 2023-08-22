@@ -5,13 +5,7 @@ locals {
 
   resource_group_name = element(coalescelist(data.azurerm_resource_group.rgrp.*.name, module.mod_scaffold_rg.*.resource_group_name, [""]), 0)
   location            = element(coalescelist(data.azurerm_resource_group.rgrp.*.location, module.mod_scaffold_rg.*.resource_group_location, [""]), 0)
-<<<<<<< HEAD
-  
-  cluster_name        = coalesce(var.custom_cluster_name, data.azurenoopsutils_resource_name.aks.result)
-  aks_identity_name   = coalesce(var.aks_user_assigned_identity_custom_name, data.azurenoopsutils_resource_name.aks_identity.result)
-=======
   aks_name            = coalesce(var.custom_aks_name, data.azurenoopsutils_resource_name.aks.result)
   aks_identity_name   = coalesce(var.aks_user_assigned_identity_custom_name, data.azurenoopsutils_resource_name.aks_identity.result)
   
->>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98
 }

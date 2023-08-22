@@ -28,6 +28,12 @@ variable "node_pool_tags" {
   default     = {}
 }
 
+variable "velero_identity_extra_tags" {
+  description = "Extra tags to add to velero MSI"
+  type        = map(string)
+  default     = {}
+}
+
 variable "aks_user_assigned_identity_tags" {
   description = "Tags to add to AKS MSI"
   type        = map(string)
