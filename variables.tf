@@ -8,16 +8,6 @@ variable "environment" {
 # RG Configuration   ##
 #######################
 
-<<<<<<< HEAD
-variable "create_aks_resource_group" {
-  description = "Controls if the resource group should be created. If set to false, the resource group name must be provided. Default is false."
-  type        = bool
-  default     = false
-}
-
-variable "use_location_short_name" {
-  description = "Use short location name for resources naming (ie eastus -> eus). Default is true. If set to false, the full cli location name will be used. if custom naming is set, this variable will be ignored."
-=======
 ########################
 # AKS Configuration   ##
 ########################
@@ -30,15 +20,10 @@ variable "dns_prefix" {
 
 variable "private_cluster_enabled" {
   description = "Should this Kubernetes Cluster have its API server only exposed on internal IP addresses? This provides a Private IP Address for the Kubernetes API on the Virtual Network where the Kubernetes Cluster is located. Defaults to false. Changing this forces a new resource to be created."
->>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98
   type        = bool
   default     = true
 }
 
-<<<<<<< HEAD
-variable "existing_resource_group_name" {
-  description = "The name of the existing resource group to use. If not set, the name will be generated using the `org_name`, `workload_name`, `deploy_environment` and `environment` variables."
-=======
 variable "azure_rbac_enabled" {
   description = "(Optional) Is Role Based Access Control based on Azure AD enabled?"
   default     = true
@@ -236,13 +221,10 @@ variable "additional_node_pool_node_count" {
 
 variable "log_analytics_workspace_name" {
   description = "(Optional) The name of the Log Analytics Workspace which the OMS Agent should send data to. Must be present if enabled is true."
->>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98
   type        = string
   default     = null
 }
 
-<<<<<<< HEAD
-=======
 variable "tenant_id" {
   description = "(Required) The tenant id of the system assigned identity which is used by master components."
   type        = string
@@ -290,4 +272,3 @@ variable "vertical_pod_autoscaler_enabled" {
   type        = bool
   default     = false
 }
->>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98

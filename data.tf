@@ -2,8 +2,6 @@
 # Licensed under the MIT License.
 # remove file if not needed
 data "azurerm_subscription" "current" {}
-<<<<<<< HEAD
-=======
 
 data "azurerm_kubernetes_service_versions" "current" {
   location = local.location
@@ -29,4 +27,3 @@ output "ssh_public_key" {
 
 
 
->>>>>>> f86e8078fb190ed2e7b3c954c286a25e72bfab98
