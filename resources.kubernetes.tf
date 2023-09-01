@@ -20,11 +20,14 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
   node_resource_group = local.node_resource_group
 
-
-
+  key_vault_secrets_provider {
+    secret_rotation_enabled = var.enable_key_vault_secrets_provider
+  }
+  
   private_cluster_enabled       = true  // private cluster is always enabled based on the current implementation (SCCA)
+
   public_network_access_enabled = false // public network access is always disabled based on the current implementation (SCCA)
-  sku_tier                      = var.sku_tier
+   sku_tier                      = var.sku_tier
 
   private_dns_zone_id = local.private_dns_zone_id
   #  dns_prefix_private_cluster = local.dns_prefix

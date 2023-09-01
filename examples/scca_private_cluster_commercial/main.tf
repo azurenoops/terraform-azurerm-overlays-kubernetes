@@ -33,9 +33,11 @@ module "aks_cluster" {
   workload_name                = var.workload_name
   environment                  = var.environment
   #custom_cluster_name         = "testaks"
-  dns_prefix = "testaksdns"
+  dns_prefix = "aksdns"
 
-  azure_policy_enabled = false
+  azure_policy_enabled       = false
   log_analytics_workspace_id = azurerm_log_analytics_workspace.aks.id
 
+  enable_key_vault_secrets_provider = false
+ 
 }
