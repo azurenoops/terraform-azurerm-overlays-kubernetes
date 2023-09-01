@@ -32,10 +32,12 @@ module "aks_cluster" {
   deploy_environment           = var.deploy_environment
   workload_name                = var.workload_name
   environment                  = var.environment
-  dns_prefix                   = "testaksdns"
+  dns_prefix                   = "aksdns"
 
   azure_policy_enabled       = true
   log_analytics_workspace_id = azurerm_log_analytics_workspace.aks.id
 
+  enable_key_vault_secrets_provider = true
+ 
 }
 

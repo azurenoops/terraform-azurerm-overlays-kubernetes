@@ -546,6 +546,13 @@ variable "enable_azure_policy" {
   default     = false
 }
 
+
+variable "enable_key_vault_secrets_provider" {
+  description = "Addon profile to integrate Azure KeyVault with AKS"
+  type        = bool
+  default     = false
+}
+
 variable "api_server_authorized_ip_ranges" {
   description = "authorized IP ranges to communicate with K8s API"
   type        = map(string)
