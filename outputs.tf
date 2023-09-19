@@ -88,3 +88,11 @@ output "kubelet_identity" {
   description = "kubelet identity information"
   value       = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity.0
 }
+
+  
+
+
+
+
+
+

@@ -38,6 +38,6 @@ module "aks_cluster" {
   azure_policy_enabled       = false
   log_analytics_workspace_id = azurerm_log_analytics_workspace.aks.id
 
-  enable_key_vault_secrets_provider = false
+  create_aks_keyvault = true
  
 }

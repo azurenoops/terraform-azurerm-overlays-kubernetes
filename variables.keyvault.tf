@@ -31,7 +31,7 @@ variable "key_vault_sku_name" {
   default     = "standard"
 }
 
-variable "keyvault_virtual_network_name" {
+variable "virtual_network_name" {
   description = "The name of the virtual network to create the Key Vault private endpoint in."
   type        = string
   default     = null

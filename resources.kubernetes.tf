@@ -21,13 +21,15 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   node_resource_group = local.node_resource_group
 
   key_vault_secrets_provider {
-    secret_rotation_enabled = var.enable_key_vault_secrets_provider
+    secret_rotation_enabled = true
   }
-  
+ 
   private_cluster_enabled       = true  // private cluster is always enabled based on the current implementation (SCCA)
 
-  public_network_access_enabled = false // public network access is always disabled based on the current implementation (SCCA)
-   sku_tier                      = var.sku_tier
+   public_network_access_enabled = false // public network access is always disabled based on the current implementation (SCCA)
+  # `public_network_access_enabled` is currently not functional and is not be passed to the API
+
+  sku_tier                      = var.sku_tier
 
   private_dns_zone_id = local.private_dns_zone_id
   #  dns_prefix_private_cluster = local.dns_prefix
@@ -70,12 +72,15 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
   identity {
     type = var.identity_type
-    identity_ids = (var.identity_type == "SystemAssigned" ? null :
+    
+     identity_ids = (var.identity_type == "SystemAssigned" ? null :
       (var.user_assigned_identity != null ?
         [var.user_assigned_identity.id] :
-    [azurerm_user_assigned_identity.aks.0.id]))
+    [azurerm_user_assigned_identity.aks.0.id]))  
   }
 
+ 
+  
   api_server_authorized_ip_ranges = local.api_server_authorized_ip_ranges
 
   oms_agent {

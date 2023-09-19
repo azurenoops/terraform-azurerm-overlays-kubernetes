@@ -24,10 +24,13 @@ module "mod_key_vault" {
   # By default this will create a `privatelink.vaultcore.azure.net` DNS zone. if created in commercial cloud
   # To use existing subnet, specify `existing_private_subnet_name` with valid subnet name. 
   # To use existing private DNS zone specify `existing_private_dns_zone` with valid zone name.
-  enable_private_endpoint      = var.create_aks_keyvault
-  virtual_network_name         = var.keyvault_virtual_network_name != null ? var.keyvault_virtual_network_name : null
-  existing_private_dns_zone    = var.existing_keyvault_private_dns_zone != null ? var.existing_keyvault_private_dns_zone : null
-  existing_private_subnet_name = var.existing_keyvault_private_subnet_name
+   
+  #enable_private_endpoint      = var.create_apim_keyvault
+  #virtual_network_name         = var.virtual_network_name != null ? var.virtual_network_name : null
+  #existing_private_dns_zone    = var.existing_keyvault_private_dns_zone != null ? var.existing_keyvault_private_dns_zone : null
+  #existing_private_subnet_name = var.existing_private_subnet_name != null ? data.azurerm_subnet.snet.0.name : null
+
+
 
   # Current user should be here to be able to create keys and secrets
   #admin_objects_ids = [
@@ -50,10 +53,17 @@ resource "azurerm_key_vault_access_policy" "aks_access_policy" {
   count = var.create_aks_keyvault && var.identity_type == "UserAssigned" ? 1 : 0
   key_vault_id = module.mod_key_vault.0.key_vault_id
   tenant_id    = data.azurerm_subscription.current.tenant_id
-  object_id    = azurerm_user_assigned_identity.aks[0].principal_id
+  object_id  = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity.0.object_id
+
+  
+  key_permissions = [
+    "Get",
+  ]
 
   secret_permissions = [
     "Get",
     "List",
+    "Set", 
+    "Delete"
   ]
 }
