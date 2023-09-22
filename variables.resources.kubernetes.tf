@@ -547,11 +547,7 @@ variable "enable_azure_policy" {
 }
 
 
-variable "enable_key_vault_secrets_provider" {
-  description = "Addon profile to integrate Azure KeyVault with AKS"
-  type        = bool
-  default     = false
-}
+ 
 
 variable "api_server_authorized_ip_ranges" {
   description = "authorized IP ranges to communicate with K8s API"
@@ -593,12 +589,6 @@ variable "ingress_application_gateway" {
     error_message = "Application Gateway Ingress Controller requires gateway_id, subnet_cidr and subnet_id "
   }
 }
-
-
- 
-
-
-
 
 variable "key_vault_secrets_provider" {
   description = "key vault secrets provider secret rotation enabled / secret rotation interval"
