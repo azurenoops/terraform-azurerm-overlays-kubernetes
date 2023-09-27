@@ -1,6 +1,7 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
+/*
 resource "azurerm_role_assignment" "network_contributor" {
   scope                            = local.resource_group_name
   role_definition_name             = "Network Contributor"
@@ -15,3 +16,4 @@ resource "azurerm_role_assignment" "aks_acr_pull_allowed" {
   scope                = each.value
   role_definition_name = "AcrPull"
 }
+*/

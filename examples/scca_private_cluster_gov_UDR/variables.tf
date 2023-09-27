@@ -18,7 +18,7 @@ variable "org_name" {
 # AKS workload name using naming convention..
 variable "workload_name" {
   type    = string
-  default = "gov"
+  default = "AKSUDR"
 
 }
 
@@ -31,7 +31,7 @@ variable "deploy_environment" {
 # Env used which Azure Cloud - Gov/Public etc.. 
 variable "environment" {
   type    = string
-  default = "dev"
+  default = "USgov"
 }
 
 # Network policy AKS

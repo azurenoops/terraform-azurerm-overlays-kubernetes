@@ -8,36 +8,35 @@
 
 
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
-  # depends_on = [
-  #   azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
-  #   azurerm_role_assignment.aks_uai_route_table_contributor,
-  # ]
-
+ /* depends_on = [
+     #azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
+     #azurerm_role_assignment.aks_uai_route_table_contributor,
+     azurerm_role_assignment.rt_identity_contributor
+  ]
+*/
   name                = local.cluster_name
   location            = local.location
   resource_group_name = local.resource_group_name
   kubernetes_version  = var.kubernetes_version
-
   node_resource_group = local.node_resource_group
-
-
-
   private_cluster_enabled       = true  // private cluster is always enabled based on the current implementation (SCCA)
-  public_network_access_enabled = false // public network access is always disabled based on the current implementation (SCCA)
+  #public_network_access_enabled = false //Argument is deprecated public_network_access_enabled` is currently not functional and is not be passed to the APIpublic network access is always disabled based on the current implementation (SCCA)
   sku_tier                      = var.sku_tier
-
   private_dns_zone_id = local.private_dns_zone_id
   #  dns_prefix_private_cluster = local.dns_prefix
   dns_prefix = local.dns_prefix
-
+  #http_application_routing_enabled = var.http_application_routing_enabled *At this time HTTP Application Routing is not supported in Azure China or Azure US Government
+   
+ 
   network_profile {
-    network_plugin     = var.network_plugin
-    network_policy     = var.network_policy
-    dns_service_ip     = (var.network_profile_options == null ? null : var.network_profile_options.dns_service_ip)
-    docker_bridge_cidr = (var.network_profile_options == null ? null : var.network_profile_options.docker_bridge_cidr)
-    service_cidr       = (var.network_profile_options == null ? null : var.network_profile_options.service_cidr)
-    outbound_type      = var.outbound_type
-    pod_cidr           = (var.network_plugin == "kubenet" ? var.pod_cidr : null)
+    network_plugin      = var.network_plugin
+    network_policy      = var.network_policy #no policies required for private cluster w/ UDR
+    dns_service_ip      = var.dns_service_ip #(var.network_profile_options == null ? null : var.network_profile_options.dns_service_ip)
+    #docker_bridge_cidr = `docker_bridge_cidr` has been deprecated as the API no longer supports it and will be removed in version 4.0 of the provider.#(var.network_profile_options == null ? null : var.network_profile_options.docker_bridge_cidr)
+    service_cidr        = var.service_cidr #(var.network_profile_options == null ? null : var.network_profile_options.service_cidr)
+    outbound_type       = var.outbound_type
+    pod_cidr            = (var.network_plugin == "kubenet" ? var.pod_cidr : null)
+    #load_balancer_sku   = var.load_balancer_sku
   }
 
   default_node_pool {
@@ -57,14 +56,23 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     max_pods                     = local.node_pools[var.default_node_pool_name].max_pods
     node_labels                  = local.node_pools[var.default_node_pool_name].node_labels
     tags                         = local.node_pools[var.default_node_pool_name].tags
-    vnet_subnet_id = (local.node_pools[var.default_node_pool_name].subnet != null ?
-    var.virtual_network.subnets[local.node_pools[var.default_node_pool_name].subnet].id : null)
-
+    vnet_subnet_id               = var.vnet_subnet_id
+    #(local.node_pools[var.default_node_pool_name].subnet != null ? var.virtual_network.subnets[local.node_pools[var.default_node_pool_name].subnet].id : null)
+    
+    
+    
     upgrade_settings {
       max_surge = local.node_pools[var.default_node_pool_name].max_surge
     }
   }
 
+  identity {
+    type = "UserAssigned"
+    identity_ids = [
+      azurerm_user_assigned_identity.aks_identity.id,
+    ]
+  }
+/*
   identity {
     type = var.identity_type
     identity_ids = (var.identity_type == "SystemAssigned" ? null :
@@ -72,8 +80,8 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
         [var.user_assigned_identity.id] :
     [azurerm_user_assigned_identity.aks.0.id]))
   }
-
-  api_server_authorized_ip_ranges = local.api_server_authorized_ip_ranges
+*/
+  #api_server_authorized_ip_ranges = local.api_server_authorized_ip_ranges
 
   oms_agent {
     log_analytics_workspace_id = var.log_analytics_workspace_id
@@ -88,7 +96,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
       admin_password = var.windows_profile.admin_password
     }
   }
-
+  
   dynamic "key_vault_secrets_provider" {
     for_each = var.key_vault_secrets_provider[*]
     content {
@@ -109,13 +117,12 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
   tags = merge(local.default_tags, var.add_tags)
 
-  lifecycle {
+    lifecycle {
     ignore_changes = [
       kubernetes_version,
       tags
     ]
   }
-
   
-
 }
+

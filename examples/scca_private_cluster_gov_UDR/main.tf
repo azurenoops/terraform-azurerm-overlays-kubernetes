@@ -6,7 +6,7 @@
 #----------------------------------------------------------
 # Azurerm provider configuration
 provider "azurerm" {
-  environment                = "public"
+  environment                = "USGovernment"
   skip_provider_registration = "true"
   features {
     resource_group {
@@ -19,7 +19,7 @@ module "mod_azure_region_lookup" {
   source  = "azurenoops/overlays-azregions-lookup/azurerm"
   version = "~> 1.0.1"
 
-  azure_region = "eastus"
+  azure_region = "usgovvirginia"
 }
 
 module "aks_cluster" {
@@ -32,9 +32,10 @@ module "aks_cluster" {
   deploy_environment           = var.deploy_environment
   workload_name                = var.workload_name
   environment                  = var.environment
-  #custom_cluster_name         = "testaks"
-  dns_prefix = "testaksdns"
+  dns_prefix                   = "testUDR"
 
+  azure_policy_enabled       = true
   log_analytics_workspace_id = azurerm_log_analytics_workspace.aks.id
 
 }
+

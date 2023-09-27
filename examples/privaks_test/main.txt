@@ -1,0 +1,89 @@
+provider "azurerm" {
+  features {}
+  environment = "AzureUSGovernment"
+}
+
+resource "azurerm_user_assigned_identity" "aks_identity" {
+  name                = "aks-identity"
+  resource_group_name = "<RESOURCE_GROUP_NAME>"
+  location            = "USGovVirginia" # Adjust the location as needed
+}
+
+resource "azurerm_role_assignment" "aks_identity_assignment" {
+  principal_id   = azurerm_user_assigned_identity.aks_identity.principal_id
+  role_definition_name = "Contributor"
+  scope          = "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP_NAME>"
+}
+
+resource "azurerm_virtual_network" "aks_vnet" {
+  name                = "aks-vnet"
+  resource_group_name = "<RESOURCE_GROUP_NAME>"
+  location            = "USGovVirginia" # Adjust the location as needed
+  address_space       = ["10.0.0.0/16"]
+}
+
+resource "azurerm_subnet" "aks_subnet" {
+  name                 = "aks-subnet"
+  resource_group_name  = azurerm_virtual_network.aks_vnet.resource_group_name
+  virtual_network_name = azurerm_virtual_network.aks_vnet.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azurerm_route_table" "aks_route_table" {
+  name                = "aks-route-table"
+  resource_group_name = "<RESOURCE_GROUP_NAME>"
+  location            = "USGovVirginia" # Adjust the location as needed
+}
+
+resource "azurerm_route" "aks_route" {
+  name                   = "aks-route"
+  resource_group_name    = azurerm_route_table.aks_route_table.resource_group_name
+  route_table_name       = azurerm_route_table.aks_route_table.name
+  address_prefix         = "0.0.0.0/0"
+  next_hop_type          = "VirtualAppliance"
+  next_hop_in_ip_address = "<USER_DEFINED_ROUTER_IP>" # Replace with your user-defined router's IP address
+}
+
+resource "azurerm_kubernetes_cluster" "aks_cluster" {
+  name                = "aks-cluster"
+  location            = "USGovVirginia" # Adjust the location as needed
+  resource_group_name = "<RESOURCE_GROUP_NAME>"
+
+  default_node_pool {
+    name       = "default"
+    node_count = 1
+    vm_size    = "Standard_D2_v3"
+  }
+
+  identity {
+    type = "UserAssigned"
+    identity_ids = [
+      azurerm_user_assigned_identity.aks_identity.id,
+    ]
+  }
+
+  network_profile {
+    network_plugin = "azure"
+    dns_service_ip = "10.2.0.10"
+    service_cidr  = "10.2.0.0/24"
+
+    load_balancer_sku = "Standard"
+  }
+
+  addon_profile {
+    oms_agent {
+      enabled                    = true
+      log_analytics_workspace_id = "<LOG_ANALYTICS_WORKSPACE_ID>"
+    }
+  }
+
+  role_based_access_control {
+    enabled = true
+  }
+
+  depends_on = [azurerm_role_assignment.aks_identity_assignment]
+}
+
+output "kube_config" {
+  value = azurerm_kubernetes_cluster.aks_cluster.kube_config[0].raw_config
+}

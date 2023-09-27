@@ -17,9 +17,6 @@ variable "kubernetes_version" {
   default = null 
 }
 
- 
-
-
 variable "private_dns_zone_type" {
   type        = string
   default     = "System"
@@ -50,21 +47,17 @@ variable "aks_pod_cidr" {
 
 variable "docker_bridge_cidr" {
   type = string
-  default = ""
+  default = "172.17.0.1/16"
 }
 
 variable "service_cidr" {
   type = string
-  default = ""
+  default = "10.1.4.0/24"
 }
-
-variable "load_balancer_sku" {
+variable "dns_service_ip" {
   type = string
-  default = "Basic"
+  default = "10.1.4.10"
 }
-
-
- 
 
 variable "dns_prefix" {
   description = "DNS prefix specified when creating the managed cluster."
@@ -72,6 +65,11 @@ variable "dns_prefix" {
   default = "aks.dns.prefix"
 }
 
+variable "load_balancer_sku" {
+  description = "Load balancer sku."
+  type        = string
+  default     = "standard"
+}
 
 
 /*
@@ -107,8 +105,9 @@ variable "image_cleaner_enabled" {
 }
 variable "azure_policy_enabled" {
   type = bool
-  default = false 
+  default = true 
 }
+
 variable "http_application_routing_enabled" {
   description = "At this time HTTP Application Routing is not supported in Azure China or Azure US Government."
   type = bool
@@ -151,12 +150,12 @@ variable "default_node_pool_vm_size" {
 
 variable "vnet_subnet_id" {
   type = string
-  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-akssystem-snet"
+  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-noops-gov-rg-aks-udr-kn/providers/Microsoft.Network/virtualNetworks/vnet-aks-udr-kn/subnets/snet-aks-udr-kn"
 }
 
 variable "pod_subnet_id" {
   type = string
-  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-aksworker-snet"
+  default = null
 }
 
 variable "nodes_subnet_id" {
@@ -355,7 +354,7 @@ variable "network_plugin" {
 variable "outbound_type" {
   description = "outbound (egress) routing method which should be used for this Kubernetes Cluster"
   type        = string
-  default     = "loadBalancer"
+  default     = "userDefinedRouting"
 }
 
 variable "pod_cidr" {
@@ -363,7 +362,7 @@ variable "pod_cidr" {
   type        = string
   default     = null
 }
-
+/*
 variable "network_profile_options" {
   description = "docker_bridge_cidr, dns_service_ip and service_cidr should all be empty or all should be set"
   type = object({
@@ -384,11 +383,12 @@ variable "network_profile_options" {
 
   }
 }
+*/
 
 variable "network_policy" {
   description = "Sets up network policy to be used with Azure CNI."
   type        = string
-  default     = null
+  default     = null #set to null if using kubenet network plugin
 
   validation {
     condition = (
