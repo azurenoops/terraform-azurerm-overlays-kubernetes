@@ -5,8 +5,6 @@
 # Azure Kubernetes Service (AKS) Cluster
 #----------------------------------------------------------------
 
-
-
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
   # depends_on = [
   #   azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
@@ -26,7 +24,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
  
   private_cluster_enabled       = true  // private cluster is always enabled based on the current implementation (SCCA)
 
-   public_network_access_enabled = false // public network access is always disabled based on the current implementation (SCCA)
+  # public_network_access_enabled = false // public network access is always disabled based on the current implementation (SCCA)
   # `public_network_access_enabled` is currently not functional and is not be passed to the API
 
   sku_tier                      = var.sku_tier
@@ -124,6 +122,13 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     ]
   }
 
+# Enable AD & Azure RBAC 
+azure_active_directory_role_based_access_control {     
+   # count = (var.azure_ad_rbac_enabled == false ? 0 : 1)
+    managed                = true
+  #  admin_group_object_ids = var.aks_admin_group_object_ids
+    azure_rbac_enabled     = true
+}
   
 
 }

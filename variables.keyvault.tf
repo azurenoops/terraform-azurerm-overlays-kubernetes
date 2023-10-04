@@ -14,9 +14,9 @@ variable "key_vault_custom_name" {
 }
 
 variable "purge_protection_enabled" {
-  description = "Specifies whether protection against purge is enabled for this key vault. Default is true."
+  description = "Specifies whether protection against purge is enabled for this key vault. Default is false."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enabled_for_template_deployment" {
