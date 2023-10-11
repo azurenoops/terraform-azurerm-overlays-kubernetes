@@ -124,9 +124,9 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
 # Enable AD & Azure RBAC 
 azure_active_directory_role_based_access_control {     
-   # count = (var.azure_ad_rbac_enabled == false ? 0 : 1)
     managed                = true
-  #  admin_group_object_ids = var.aks_admin_group_object_ids
+    tenant_id              = data.azurerm_subscription.current.tenant_id
+    admin_group_object_ids = var.admin_group_object_ids
     azure_rbac_enabled     = true
 }
   

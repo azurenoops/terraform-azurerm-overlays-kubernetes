@@ -34,11 +34,10 @@ resource "azurerm_role_assignment" "route_table_network_contributor" {
   principal_id = (var.user_assigned_identity == null ? azurerm_user_assigned_identity.aks.0.principal_id :
   var.user_assigned_identity.principal_id)
 }
-
+/*
 ## AKS Admin/Infra Team Role 
 ## List cluster admin credential action.
 resource "azurerm_role_assignment" "admin_user" {
-  count = (var.azure_ad_rbac_enabled == false ? 0 : 1)
   scope = azurerm_kubernetes_cluster.aks_cluster.id
   role_definition_name = "Azure Kubernetes Service Cluster Admin Role"
   principal_id         = azuread_group.aksadminteam.id
@@ -57,7 +56,6 @@ resource "azurerm_role_assignment" "appdevs_user" {
 ## AKS Contributor/Operations Team Role 
 ## Grants access to read and write Azure Kubernetes Service clusters
 resource "azurerm_role_assignment" "ops_user" {
-  count = (var.azure_ad_rbac_enabled == false ? 0 : 1)
   scope = azurerm_kubernetes_cluster.aks_cluster.id
   role_definition_name = "Azure Kubernetes Service Contributor Role"
   principal_id         = azuread_group.aksopsteam.id
@@ -69,7 +67,6 @@ resource "azurerm_role_assignment" "ops_user" {
 ## Allows read-only access to see most objects in a namespace. 
 ## It does not allow viewing roles or role bindings. This role does not allow viewing Secret
 resource "azurerm_role_assignment" "reader_user" {
-  count = (var.azure_ad_rbac_enabled == false ? 0 : 1)
   scope = azurerm_kubernetes_cluster.aks_cluster.id
   role_definition_name = "Azure Kubernetes Service RBAC Reader"
   principal_id         = azuread_group.aksreader.id
@@ -80,9 +77,16 @@ resource "azurerm_role_assignment" "reader_user" {
 ## This role does not allow viewing or modifying roles or role bindings. However, this role allow
 
 resource "azurerm_role_assignment" "writer_user" {
-  count = (var.azure_ad_rbac_enabled == false ? 0 : 1)
   scope = azurerm_kubernetes_cluster.aks_cluster.id
   role_definition_name = "Azure Kubernetes Service RBAC Writer"
   principal_id         = azuread_group.akswriter.id
+}
+*/
+
+resource "azurerm_role_assignment" "aks_acr_pull_allowed" {  
+  scope                = azurerm_container_registry.aks_acr.id
+  role_definition_name = "AcrPull"
+  skip_service_principal_aad_check = true
+  principal_id         = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity.0.object_id 
 }
 

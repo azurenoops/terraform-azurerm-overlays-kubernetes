@@ -1,17 +1,16 @@
-
+ 
 ## AKS Admin/Infra Team Group
 ## List cluster admin credential action.
 resource "azuread_group" "aksadminteam" {
 
   display_name     = var.aks_admin_group
- # owners           = [data.azuread_client_config.current.object_id]
   security_enabled = true
 }
 
  
 output "admin_object_id" {
   value = azuread_group.aksadminteam.object_id
-} 
+}   
 
 
 ## AKS Dev Team Group  
@@ -65,3 +64,4 @@ output "writer_object_id" {
 
 
 
+ 
