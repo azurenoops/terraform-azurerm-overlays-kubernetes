@@ -34,7 +34,7 @@ resource "azurerm_role_assignment" "route_table_network_contributor" {
   principal_id = (var.user_assigned_identity == null ? azurerm_user_assigned_identity.aks.0.principal_id :
   var.user_assigned_identity.principal_id)
 }
-/*
+ 
 ## AKS Admin/Infra Team Role 
 ## List cluster admin credential action.
 resource "azurerm_role_assignment" "admin_user" {
@@ -81,7 +81,7 @@ resource "azurerm_role_assignment" "writer_user" {
   role_definition_name = "Azure Kubernetes Service RBAC Writer"
   principal_id         = azuread_group.akswriter.id
 }
-*/
+ 
 
 resource "azurerm_role_assignment" "aks_acr_pull_allowed" {  
   scope                = azurerm_container_registry.aks_acr.id
