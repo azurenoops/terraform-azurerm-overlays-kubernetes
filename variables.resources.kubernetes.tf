@@ -1,23 +1,23 @@
 # variables for AKS
 variable "aks_name" {
-  type = string
+  type    = string
   default = "aks"
 }
 variable "aks_location" {
-  type = string
+  type    = string
   default = "eastus"
 }
 variable "aks_resource_group_name" {
-  type = string
+  type    = string
   default = "aks"
 }
 variable "kubernetes_version" {
   description = "Kubernetes version to deploy. Will deploy newest AKS version if this value is not set."
-  type = string
-  default = null 
+  type        = string
+  default     = null
 }
 
- 
+
 
 
 variable "private_dns_zone_type" {
@@ -42,34 +42,34 @@ variable "private_dns_zone_id" {
   description = "Id of the private DNS Zone when <private_dns_zone_type> is custom"
 }
 
- 
+
 variable "aks_pod_cidr" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "docker_bridge_cidr" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "service_cidr" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "load_balancer_sku" {
-  type = string
+  type    = string
   default = "Basic"
 }
 
 
- 
+
 
 variable "dns_prefix" {
   description = "DNS prefix specified when creating the managed cluster."
   type        = string
-  default = "aks.dns.prefix"
+  default     = "aks.dns.prefix"
 }
 
 
@@ -90,29 +90,29 @@ variable "sku_tier" {
 }
 */
 variable "workload_identity_enabled" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "oidc_issuer_enabled" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "open_service_mesh_enabled" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "image_cleaner_enabled" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "azure_policy_enabled" {
-  type = bool
-  default = false 
+  type    = bool
+  default = false
 }
 variable "http_application_routing_enabled" {
   description = "At this time HTTP Application Routing is not supported in Azure China or Azure US Government."
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "default_node_pool" {
@@ -125,11 +125,11 @@ variable "default_node_pool" {
 }
 
 variable "nodes_pools" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
- 
+
 
 variable "default_node_pool_name" {
   description = "Default node pool name.  Value refers to key within node_pools variable."
@@ -140,33 +140,33 @@ variable "default_node_pool_name" {
 
 
 variable "default_node_pool_type" {
-  type = string
+  type    = string
   default = "VirtualMachineScaleSets"
 }
 
 variable "default_node_pool_vm_size" {
-  type = string
+  type    = string
   default = "Standard_D2s_v3"
 }
 
 variable "vnet_subnet_id" {
-  type = string
+  type    = string
   default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-akssystem-snet"
 }
 
 variable "pod_subnet_id" {
-  type = string
+  type    = string
   default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-aksworker-snet"
 }
 
 variable "nodes_subnet_id" {
-  type = string
+  type    = string
   default = null
 }
 
 variable "default_node_pool_availability_zones" {
-  type = list(string)
-  default = ["1","2","3"]
+  type    = list(string)
+  default = ["1", "2", "3"]
 }
 
 variable "default_node_pool_node_labels" {
@@ -177,79 +177,79 @@ variable "default_node_pool_node_labels" {
 }
 
 variable "default_node_pool_node_taints" {
-  type = list(string)
+  type    = list(string)
   default = ["nodepool=default:NoSchedule"]
 }
 
 variable "default_node_pool_enable_auto_scaling" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "default_node_pool_enable_host_encryption" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "default_node_pool_eviction_policy" {
-  type = string
+  type    = string
   default = "Delete"
 }
 
 variable "default_node_pool_enable_node_public_ip" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "default_node_pool_max_pods" {
-  type = number
+  type    = number
   default = 110
 }
 
 variable "default_node_pool_max_count" {
-  type = number
+  type    = number
   default = null
 }
 
 variable "default_node_pool_min_count" {
-  type = number
+  type    = number
   default = null
 }
 
 variable "default_node_pool_node_count" {
-  type = number
+  type    = number
   default = 3
 }
 
-variable default_node_pool_os_disk_type {
-  type = string
+variable "default_node_pool_os_disk_type" {
+  type    = string
   default = "Managed"
 }
 
 
 
 variable "default_node_pool_os_disk_size_gb" {
-  type = number
+  type    = number
   default = 30
 }
 
 variable "default_node_pool_os_type" {
-  type = string
+  type    = string
   default = "managed"
 }
 
 variable "default_node_pool_zones" {
-  type = list(string)
-  default = ["1","2","3"]
+  type    = list(string)
+  default = ["1", "2", "3"]
 }
 
 variable "default_node_pool_orchestrator_version" {
-  type = string
+  type    = string
   default = "1.24.3"
 }
 
 variable "default_node_pool_priority" {
-  type = string
+  type    = string
   default = "Regular"
 }
 
@@ -263,8 +263,8 @@ variable "tags" {
 */
 
 variable "admin_username" {
-  type = string
-    default = "azureuser"
+  type    = string
+  default = "azureuser"
 }
 /*
 variable "ssh_public_key" {
@@ -547,7 +547,7 @@ variable "enable_azure_policy" {
 }
 
 
- 
+
 
 variable "api_server_authorized_ip_ranges" {
   description = "authorized IP ranges to communicate with K8s API"
@@ -609,3 +609,11 @@ variable "key_vault_secrets_provider" {
     error_message = " key vault secrets provider requires both secret rotation enabled and secret rotation interval"
   }
 }
+
+variable "admin_group_object_ids" {
+  description = "(Optional) A list of Object IDs of Azure Active Directory Groups which should have Admin Role on the Cluster."
+  default     = [""]
+  type        = list(string)
+}
+
+
