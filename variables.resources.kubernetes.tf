@@ -610,10 +610,6 @@ variable "key_vault_secrets_provider" {
   }
 }
 
-variable "admin_group_object_ids" {
-  description = "(Optional) A list of Object IDs of Azure Active Directory Groups which should have Admin Role on the Cluster."
-  default     = [""]
-  type        = list(string)
-}
+ 
 
 

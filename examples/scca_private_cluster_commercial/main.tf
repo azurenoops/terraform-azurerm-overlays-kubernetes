@@ -15,6 +15,12 @@ provider "azurerm" {
   }
 }
 
+provider "azuread" {
+    environment = "public"
+    tenant_id = data.azurerm_subscription.current.tenant_id
+    client_id = data.azurerm_client_config.current.client_id
+}
+
 module "mod_azure_region_lookup" {
   source  = "azurenoops/overlays-azregions-lookup/azurerm"
   version = "~> 1.0.1"
