@@ -12,7 +12,7 @@ variable "existing_resource_group_name" {
 # variable string we use Automating naming convention. Orgname=BC-, 
 variable "org_name" {
   type    = string
-  default = "tf-noops"
+  default = "tf-anoa"
 }
 
 # AKS workload name using naming convention..
@@ -25,13 +25,13 @@ variable "workload_name" {
 # deploy_environment used which Azure Cloud - Test/UAT/Dev/Prod etc.. 
 variable "deploy_environment" {
   type    = string
-  default = "dev"
+  default = "bc"
 }
 
 # Env used which Azure Cloud - Gov/Public etc.. 
 variable "environment" {
   type    = string
-  default = "dev"
+  default = "gov"
 }
 
 # Network policy AKS
@@ -46,3 +46,8 @@ variable "network_policy" {
   default = "calico"
 }
 
+variable "firewall_private_ip" {
+  type    = string
+  default = "10.8.4.68"
+  
+}

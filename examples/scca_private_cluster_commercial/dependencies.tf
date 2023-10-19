@@ -3,19 +3,84 @@ resource "azurerm_resource_group" "aks_rg" {
   name     = "public-aks-rg"
   location = module.mod_azure_region_lookup.location_cli
 }
-
 resource "azurerm_virtual_network" "aks_vnet" {
   name                = "vnet-aks"
   location            = module.mod_azure_region_lookup.location_cli
   resource_group_name = azurerm_resource_group.aks_rg.name
-  address_space       = ["10.0.0.0/16"]
+  address_space       = ["10.1.0.0/16"]
 }
 
+#creates the subnet for the private cluster
 resource "azurerm_subnet" "aks_subnet" {
   name                 = "snet-aks"
   resource_group_name  = azurerm_resource_group.aks_rg.name
   virtual_network_name = azurerm_virtual_network.aks_vnet.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.1.2.0/24"]
+  private_endpoint_network_policies_enabled = false 
+}
+
+#creates the ingress subnet for the private cluster load balancer
+resource "azurerm_subnet" "aks_subnet_ingress" {
+  name                 = "snet-aks-ingress"
+  resource_group_name  = azurerm_resource_group.aks_rg.name
+  virtual_network_name = azurerm_virtual_network.aks_vnet.name
+  address_prefixes     = ["10.1.3.0/24"]
+  private_endpoint_network_policies_enabled = false
+}
+
+#creates the load balancer for the private cluster ingress
+resource "azurerm_lb" "ingress_aks_lb" {
+  name                          = "ingress_aks_lb"
+  location                      = module.mod_azure_region_lookup.location_cli
+  resource_group_name           = azurerm_resource_group.aks_rg.name
+  frontend_ip_configuration {
+    name                         = "LoadBalancerFrontEnd"
+    subnet_id                     = azurerm_subnet.aks_subnet_ingress.id
+    private_ip_address_allocation = "Static"
+    private_ip_address            = "10.1.3.5"    
+  }
+}
+
+#creates route table for the private cluster egress to internet
+resource "azurerm_route_table" "rt" {
+  name                = "rt-aks_egress"
+  location            = module.mod_azure_region_lookup.location_cli
+  resource_group_name = azurerm_resource_group.aks_rg.name
+  
+  route {
+    name                   = "1kubenetfw_fw_r"
+    address_prefix         = "0.0.0.0/0"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = var.firewall_private_ip
+  }
+}
+
+#associates the route table to the subnet
+resource "azurerm_subnet_route_table_association" "snet_rt" {
+  subnet_id      = azurerm_subnet.aks_subnet.id
+  route_table_id = azurerm_route_table.rt.id
+}
+
+#wl spoke to hub peering
+resource "azurerm_virtual_network_peering" "aks_spoke_to_hub" {
+  name                                = "aks_spoke_to_hub"
+  resource_group_name                 = azurerm_resource_group.aks_rg.name
+  allow_forwarded_traffic             = true
+  allow_virtual_network_access        = true
+  #allow_remote_virtual_network_access = true
+  virtual_network_name                = azurerm_virtual_network.aks_vnet.name
+  remote_virtual_network_id           = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa-usgaz-hub-core-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa-usgaz-hub-core-dev-vnet"
+}
+
+#hub to wl spoke peering
+resource "azurerm_virtual_network_peering" "hub_to_aks_spoke" {
+  name                      = "hub_to_aks_spoke"
+  allow_forwarded_traffic             = true
+  allow_virtual_network_access        = true
+  #allow_remote_virtual_network_access = true
+  resource_group_name       = "tf-anoa-usgaz-hub-core-dev-rg"
+  virtual_network_name      = "tf-anoa-usgaz-hub-core-dev-vnet"
+  remote_virtual_network_id = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa-gov-rg-aks/providers/Microsoft.Network/virtualNetworks/vnet-aks"
 }
 
 

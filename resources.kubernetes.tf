@@ -37,7 +37,6 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     network_plugin     = var.network_plugin
     network_policy     = var.network_policy
     dns_service_ip     = (var.network_profile_options == null ? null : var.network_profile_options.dns_service_ip)
-    docker_bridge_cidr = (var.network_profile_options == null ? null : var.network_profile_options.docker_bridge_cidr)
     service_cidr       = (var.network_profile_options == null ? null : var.network_profile_options.service_cidr)
     outbound_type      = var.outbound_type
     pod_cidr           = (var.network_plugin == "kubenet" ? var.pod_cidr : null)
@@ -60,8 +59,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     max_pods                     = local.node_pools[var.default_node_pool_name].max_pods
     node_labels                  = local.node_pools[var.default_node_pool_name].node_labels
     tags                         = local.node_pools[var.default_node_pool_name].tags
-    vnet_subnet_id = (local.node_pools[var.default_node_pool_name].subnet != null ?
-    var.virtual_network.subnets[local.node_pools[var.default_node_pool_name].subnet].id : null)
+    vnet_subnet_id               = var.vnet_subnet_id
 
     upgrade_settings {
       max_surge = local.node_pools[var.default_node_pool_name].max_surge
@@ -77,11 +75,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     [azurerm_user_assigned_identity.aks.0.id]))  
   }
 
- 
-  
-  api_server_authorized_ip_ranges = local.api_server_authorized_ip_ranges
-
-  oms_agent {
+ oms_agent {
     log_analytics_workspace_id = var.log_analytics_workspace_id
   }
 
@@ -103,17 +97,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     }
   }
 
-  dynamic "ingress_application_gateway" {
-    for_each = try(var.ingress_application_gateway.gateway_id, null) == null ? [] : [1]
-
-    content {
-      gateway_id  = var.ingress_application_gateway.gateway_id
-      subnet_cidr = var.ingress_application_gateway.subnet_cidr
-      subnet_id   = var.ingress_application_gateway.subnet_id
-    }
-  }
-
-  tags = merge(local.default_tags, var.add_tags)
+tags = merge(local.default_tags, var.add_tags)
 
   lifecycle {
     ignore_changes = [

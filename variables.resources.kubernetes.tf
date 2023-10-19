@@ -149,9 +149,10 @@ variable "default_node_pool_vm_size" {
   default = "Standard_D2s_v3"
 }
 
+#var for aks vnet
 variable "vnet_subnet_id" {
-  type    = string
-  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa2-usgaz-aks-dev-rg/providers/Microsoft.Network/virtualNetworks/tf-anoa2-usgaz-aks-dev-vnet/subnets/tf-anoa2-usgaz-aks-dev-akssystem-snet"
+  type = string
+  default = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa-gov-rg-aks/providers/Microsoft.Network/virtualNetworks/vnet-aks/subnets/snet-aks"
 }
 
 variable "pod_subnet_id" {
@@ -253,15 +254,6 @@ variable "default_node_pool_priority" {
   default = "Regular"
 }
 
-
-
-/*
-variable "tags" {
-  type = string
-  default = "aks"
-}
-*/
-
 variable "admin_username" {
   type    = string
   default = "azureuser"
@@ -355,7 +347,7 @@ variable "network_plugin" {
 variable "outbound_type" {
   description = "outbound (egress) routing method which should be used for this Kubernetes Cluster"
   type        = string
-  default     = "loadBalancer"
+  default     = "userDefinedRouting"
 }
 
 variable "pod_cidr" {
@@ -567,29 +559,6 @@ variable "log_analytics_workspace_id" {
   default     = null
 }
 
-variable "ingress_application_gateway" {
-  description = "AGIC - Azure Application Gateway Ingress Controller gateway_id/subnet_cidr/subnet_id"
-  type = object({
-    gateway_id  = string
-    subnet_cidr = string
-    subnet_id   = string
-  })
-  default = null
-
-  validation {
-    condition = (
-      var.ingress_application_gateway == null ? true :
-      ((var.ingress_application_gateway.gateway_id != null) &&
-        (var.ingress_application_gateway.gateway_id != "") &&
-        (var.ingress_application_gateway.subnet_cidr != null) &&
-        (var.ingress_application_gateway.subnet_cidr != "") &&
-        (var.ingress_application_gateway.subnet_id != null) &&
-      (var.ingress_application_gateway.subnet_id != ""))
-    )
-    error_message = "Application Gateway Ingress Controller requires gateway_id, subnet_cidr and subnet_id "
-  }
-}
-
 variable "key_vault_secrets_provider" {
   description = "key vault secrets provider secret rotation enabled / secret rotation interval"
   type = object({
@@ -609,6 +578,7 @@ variable "key_vault_secrets_provider" {
     error_message = " key vault secrets provider requires both secret rotation enabled and secret rotation interval"
   }
 }
+
 
  
 
