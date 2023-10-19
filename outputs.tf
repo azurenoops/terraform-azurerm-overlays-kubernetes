@@ -89,6 +89,7 @@ output "kubelet_identity" {
   value       = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity.0
 }
 
+
   
 
 
