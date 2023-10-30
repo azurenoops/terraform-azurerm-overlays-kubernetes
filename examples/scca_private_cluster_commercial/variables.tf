@@ -20,7 +20,7 @@ variable "workload_name" {
 # deploy_environment used which Azure Cloud - Test/UAT/Dev/Prod etc.. 
 variable "deploy_environment" {
   type    = string
-  default = "dev"
+  default = "ComDev"
 }
 
 # Env used which Azure Cloud - Gov/Public etc.. 
@@ -39,5 +39,11 @@ variable "network_plugin" {
 variable "network_policy" {
   type    = string
   default = "calico"
+}
+
+#az fw private ip for the private cluster egress to internet
+variable "firewall_private_ip" {
+  type    = string
+  default = "10.8.4.68"
 }
 
