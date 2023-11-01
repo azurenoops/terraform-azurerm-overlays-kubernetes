@@ -2,7 +2,20 @@
 #  value = module.echo.echo_text
 #}
 
-output "azurerm_subnet_aks_subnet_id" {
+output "subnet_id" {
     value = azurerm_subnet.aks_subnet.id
+}
+
+output "subnet_name" {
+    value = azurerm_subnet.aks_subnet.name
+}
+
+output "vnet_subnet_id" {
+    value = azurerm_subnet.aks_subnet.id
+  
+}
+
+output "vnet_id" {
+    value = azurerm_virtual_network.aks_vnet.id
   
 }

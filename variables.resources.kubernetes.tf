@@ -152,7 +152,7 @@ variable "default_node_pool_vm_size" {
 #var for aks vnet
 variable "vnet_subnet_id" {
   type = string
-  default = "/subscriptions/def76464-cef6-4c3b-9728-8952072734eb/resourceGroups/tf-anoa-public-aks-rg/providers/Microsoft.Network/virtualNetworks/vnet-aks/subnets/snet-aks"
+  default = ""  #"/subscriptions/def76464-cef6-4c3b-9728-8952072734eb/resourceGroups/tf-anoa-public-aks-rg/providers/Microsoft.Network/virtualNetworks/vnet-aks/subnets/snet-aks"
 }
 
 variable "pod_subnet_id" {
