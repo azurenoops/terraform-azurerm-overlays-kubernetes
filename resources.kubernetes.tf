@@ -11,6 +11,8 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   #   azurerm_role_assignment.aks_uai_route_table_contributor,
   # ]
 
+  depends_on = [ data.azurerm_virtual_network.aks_vnet, data.azurerm_subnet.aks_subnet ]
+
   name                = local.cluster_name
   location            = local.location
   resource_group_name = local.resource_group_name
@@ -59,7 +61,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     max_pods                     = local.node_pools[var.default_node_pool_name].max_pods
     node_labels                  = local.node_pools[var.default_node_pool_name].node_labels
     tags                         = local.node_pools[var.default_node_pool_name].tags
-    vnet_subnet_id               = var.vnet_subnet_id
+    vnet_subnet_id               = data.azurerm_subnet.aks_subnet.id #var.vnet_subnet_id
 
     upgrade_settings {
       max_surge = local.node_pools[var.default_node_pool_name].max_surge
