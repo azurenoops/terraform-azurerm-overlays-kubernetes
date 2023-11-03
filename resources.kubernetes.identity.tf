@@ -39,7 +39,7 @@ resource "azurerm_role_assignment" "route_table_network_contributor" {
 resource "azurerm_role_assignment" "aks_identity_contributor" {
   principal_id          = azurerm_user_assigned_identity.aks[0].principal_id #azurerm_user_assigned_identity.aks_identity.principal_id
   role_definition_name  = "Contributor"  # You can use a more specific role if needed
-  scope                 = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa-gov-rg-aks/providers/Microsoft.Network/routeTables/rt-aks_egress" #azurerm_route_table.rt.id
+  scope                 = data.azurerm_route_table.rt.id
 }
  
 ## AKS Admin/Infra Team Role 

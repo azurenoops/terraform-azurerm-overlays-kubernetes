@@ -11,7 +11,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   #   azurerm_role_assignment.aks_uai_route_table_contributor,
   # ]
 
-  depends_on = [ data.azurerm_virtual_network.aks_vnet, data.azurerm_subnet.aks_subnet ]
+  depends_on = [ data.azurerm_virtual_network.aks_vnet, data.azurerm_subnet.aks_subnet, data.azurerm_route_table.rt]
 
   name                = local.cluster_name
   location            = local.location
