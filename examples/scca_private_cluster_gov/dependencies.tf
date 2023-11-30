@@ -105,4 +105,4 @@ resource "azurerm_log_analytics_solution" "solution" {
     publisher = "Microsoft"
     product   = "OMSGallery/ContainerInsights"
   }
-} 
+}

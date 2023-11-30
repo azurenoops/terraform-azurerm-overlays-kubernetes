@@ -1,8 +1,0 @@
-# AZ AKS FW config
-/*
-resource "azurerm_fi" "aks_fw" {
-  
-
-  
-}
-*/
