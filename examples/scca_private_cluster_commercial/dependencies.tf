@@ -67,9 +67,8 @@ resource "azurerm_virtual_network_peering" "aks_spoke_to_hub" {
   resource_group_name                 = azurerm_resource_group.aks_rg.name
   allow_forwarded_traffic             = true
   allow_virtual_network_access        = true
-  #allow_remote_virtual_network_access = true
   virtual_network_name                = azurerm_virtual_network.aks_vnet.name
-  remote_virtual_network_id           = "/subscriptions/def76464-cef6-4c3b-9728-8952072734eb/resourceGroups/anoa-eus-hub-core-dev-rg/providers/Microsoft.Network/virtualNetworks/anoa-eus-hub-core-dev-vnet"
+  remote_virtual_network_id           = "/subscriptions/ENTER_SUB_ID_HERE/resourceGroups/anoa-eus-hub-core-dev-rg/providers/Microsoft.Network/virtualNetworks/anoa-eus-hub-core-dev-vnet"
 }
 
 #hub to wl spoke peering
@@ -80,13 +79,13 @@ resource "azurerm_virtual_network_peering" "hub_to_aks_spoke" {
   #allow_remote_virtual_network_access = true
   resource_group_name       = "anoa-eus-hub-core-dev-rg"
   virtual_network_name      = "anoa-eus-hub-core-dev-vnet"
-  remote_virtual_network_id = azurerm_virtual_network.aks_vnet.id  #"/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa-gov-rg-aks/providers/Microsoft.Network/virtualNetworks/vnet-aks"
+  remote_virtual_network_id = azurerm_virtual_network.aks_vnet.id
 }
 
 
 resource "azurerm_log_analytics_workspace" "aks" {
   name                = "aks-la-01"
-  resource_group_name = azurerm_resource_group.aks_rg.name # var.existing_resource_group_name
+  resource_group_name = azurerm_resource_group.aks_rg.name
   location            = var.location
   sku                 = "PerGB2018"
   retention_in_days   = 30

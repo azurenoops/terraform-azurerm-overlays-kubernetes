@@ -5,6 +5,7 @@
 # Azure Region Lookup
 #----------------------------------------------------------
 # Azurerm provider configuration
+
 provider "azurerm" {
   environment                = "USGovernment"
   skip_provider_registration = "true"
