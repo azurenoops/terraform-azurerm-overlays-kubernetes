@@ -5,6 +5,7 @@
 # Azure Region Lookup
 #----------------------------------------------------------
 # Azurerm provider configuration
+
 provider "azurerm" {
   environment                = "USGovernment"
   skip_provider_registration = "true"
@@ -31,7 +32,7 @@ module "mod_azure_region_lookup" {
 
 module "aks_cluster" {
   source                       = "../.."
-  depends_on                   = [azurerm_resource_group.aks_rg]
+  depends_on                   = [azurerm_resource_group.aks_rg, azurerm_subnet.aks_subnet]
   create_aks_resource_group    = false
   location                     = var.location
   existing_resource_group_name = azurerm_resource_group.aks_rg.name

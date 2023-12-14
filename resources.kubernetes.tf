@@ -1,23 +1,20 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
+
 #---------------------------------------------------------------
 # Azure Kubernetes Service (AKS) Cluster
 #----------------------------------------------------------------
-
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
   # depends_on = [
   #   azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
   #   azurerm_role_assignment.aks_uai_route_table_contributor,
   # ]
-
-  depends_on = [ data.azurerm_virtual_network.aks_vnet, data.azurerm_subnet.aks_subnet ]
-
+  depends_on = [ data.azurerm_subnet.aks_subnet, azurerm_role_assignment.route_table_network_contributor ]
   name                = local.cluster_name
   location            = local.location
   resource_group_name = local.resource_group_name
   kubernetes_version  = var.kubernetes_version
-
   node_resource_group = local.node_resource_group
 
   key_vault_secrets_provider {
@@ -25,15 +22,9 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   }
  
   private_cluster_enabled       = true  // private cluster is always enabled based on the current implementation (SCCA)
-
-  # public_network_access_enabled = false // public network access is always disabled based on the current implementation (SCCA)
-  # `public_network_access_enabled` is currently not functional and is not be passed to the API
-
   sku_tier                      = var.sku_tier
-
-  private_dns_zone_id = local.private_dns_zone_id
-  #  dns_prefix_private_cluster = local.dns_prefix
-  dns_prefix = local.dns_prefix
+  private_dns_zone_id           = local.private_dns_zone_id
+  dns_prefix                    = local.dns_prefix
 
   network_profile {
     network_plugin     = var.network_plugin
@@ -43,7 +34,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     outbound_type      = var.outbound_type
     pod_cidr           = (var.network_plugin == "kubenet" ? var.pod_cidr : null)
   }
-
+  
   default_node_pool {
     name                         = var.default_node_pool_name
     vm_size                      = local.node_pools[var.default_node_pool_name].vm_size

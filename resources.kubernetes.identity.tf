@@ -89,11 +89,11 @@ resource "azurerm_role_assignment" "writer_user" {
   principal_id         = azuread_group.akswriter.id
 }
  
-
+/*
 resource "azurerm_role_assignment" "aks_acr_pull_allowed" {  
-  scope                = azurerm_container_registry.aks_acr.id
+  scope                = module.aks_acr.id #azurerm_container_registry.aks_acr.id
   role_definition_name = "AcrPull"
   skip_service_principal_aad_check = true
   principal_id         = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity.0.object_id 
 }
-
+*/
