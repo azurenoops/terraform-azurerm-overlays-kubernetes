@@ -24,6 +24,10 @@ module "mod_key_vault" {
   # By default this will create a `privatelink.vaultcore.azure.net` DNS zone. if created in commercial cloud
   # To use existing subnet, specify `existing_private_subnet_name` with valid subnet name. 
   # To use existing private DNS zone specify `existing_private_dns_zone` with valid zone name.
+
+  enable_private_endpoint       = var.enable_private_endpoint
+  virtual_network_name          = data.azurerm_virtual_network.aks_vnet.name  
+  existing_private_subnet_name =  data.azurerm_subnet.aks_subnet.name
    
   #enable_private_endpoint      = var.create_apim_keyvault
   #virtual_network_name         = var.virtual_network_name != null ? var.virtual_network_name : null
