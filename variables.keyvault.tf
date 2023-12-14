@@ -48,3 +48,10 @@ variable "existing_keyvault_private_subnet_name" {
   type        = string
   default     = null
 }
+
+variable "enable_private_endpoint" {
+  description = "Controls if the enable private endpoint. If set to false, it disable private endpoint . Default is true."
+  type        = bool
+  default     = true
+}
+
