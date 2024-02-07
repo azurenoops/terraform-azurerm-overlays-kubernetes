@@ -81,7 +81,7 @@ resource "azurerm_virtual_network_peering" "hub_to_aks_spoke" {
   #allow_remote_virtual_network_access = true
   resource_group_name       = "tf-anoa-usgaz-hub-core-dev-rg"
   virtual_network_name      = "tf-anoa-usgaz-hub-core-dev-vnet"
-  remote_virtual_network_id = "/subscriptions/df79eff1-4ca3-4d21-9c6b-64dd15c253e8/resourceGroups/tf-anoa-gov-rg-aks/providers/Microsoft.Network/virtualNetworks/vnet-aks"
+  remote_virtual_network_id = azurerm_virtual_network.aks_vnet.id
 }
 
 #creates log analytics workspace for the private cluster
