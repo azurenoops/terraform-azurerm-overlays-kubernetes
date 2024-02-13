@@ -4,23 +4,23 @@
 
 ## Overview
 
-This overlay module deploys a Azure Kubernetes Service - Private Cluster - Kubenet suitable for hosting docker containers apps. The cluster will be deployed to the Hub/Spoke shared services resource group or Tier 3 spoke using default naming unless alternative values are provided at run time.
+This overlay module deploys a Azure Kubernetes Service - Private Cluster - Kubenet suitable for hosting docker container apps. The cluster will be deployed to the Hub/Spoke shared services resource group or a Tier 3 spoke using default naming unless alternative values are provided at run time.
 
 Read on to understand what this example does, and when you're ready, collect all of the pre-requisites, then deploy the example.
 ## SCCA Compliance
 
-This overlay module will deploy a SCCA compliant, Private AKS Cluster. This is accomplished by isolating the the control plane from the user plane. Egress is controlled by creating a UserDefinedRoute that direct all tracffic out of the Hub Firewall. Ingress in controlled by directing all inbound traffic through a Azure Loadbalancer. The Private AKS Cluster is also configured with private endpoints along with SCCA compliant network rules.
+This overlay module will deploy a SCCA compliant, Private AKS Cluster. This is accomplished by isolating the control plane from the user plane. Egress is controlled by creating a UserDefinedRoute that directs all tracffic through an Azure the Azure Firewall in the HUB network. Ingress in controlled by directing all inbound traffic through a Azure Loadbalancer. The Private AKS Cluster is also configured with private endpoints along with SCCA compliant network rules.
 
 Ref: Azure NoOps Hub Module [SCCA compliant Network](https://registry.terraform.io/modules/azurenoops/overlays-hubspoke/azurerm/latest).
 For more information, please read the [SCCA documentation](). 
 
 ## Deploy Azure Kubernetes Service - Private Cluster - Kubenet
 
-The docs on Azure Kubernetes Service (AKS): <https://docs.microsoft.com/en-us/azure/aks/>.  By default, this overlay will deploy resources into standard default hub/spoke subscriptions and resource groups.  
+Documentation for the Azure Kubernetes Service (AKS): <https://learn.microsoft.com/en-us/azure/aks/>.  By default, this overlay will deploy resources into standard default hub/spoke subscriptions and resource groups.  
 
-The Docs on AKS Custome egress: <https://learn.microsoft.com/en-us/azure/aks/egress-udr/>
+Documentation for AKS Custom egress: <https://learn.microsoft.com/en-us/azure/aks/egress-udr/>
 
-The subscription and resource group can be changed by providing the resource group name (Param: parTargetSubscriptionId/parTargetResourceGroup) and ensuring that the Azure context is set the proper subscription.  
+The subscription and resource group can be changed by providing the resource group name and ensuring that the Azure context is set to the proper subscription.  
 
 ## Pre-requisites
 
@@ -127,11 +127,11 @@ For example, deploying using the `az deployment group create` command in the Azu
 
 ## About Azure Container Registry
 
-The docs on Azure Container Registry: <https://docs.microsoft.com/en-us/azure/container-registry/>. By default, this workload uses the Azure Container Registry workload to deploy resources into the AKS workload spoke. 
+Documention on Azure Container Registry: <https://learn.microsoft.com/en-us/azure/container-registry/>. By default, this workload uses the Azure Container Registry workload to deploy resources into the AKS workload spoke. 
 
 ## About Azure Kubernetes Service - Private Cluster
 
-The docs on Azure Kubernetes Service: <https://docs.microsoft.com/en-us/azure/aks/>.  this workload uses the Azure Kubernetes Service - Cluster workload to deploy resources into the AKS workload spoke.
+The Documention on Azure Kubernetes Service: <https://learn.microsoft.com/en-us/azure/aks/>.  this workload uses the Azure Kubernetes Service - Cluster workload to deploy resources into the AKS workload spoke.
 
 
 
