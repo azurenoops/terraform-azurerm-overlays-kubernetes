@@ -3,22 +3,22 @@ variable "aks_name" {
   type    = string
   default = "aks"
 }
+
 variable "aks_location" {
   type    = string
   default = "eastus"
 }
+
 variable "aks_resource_group_name" {
   type    = string
   default = "aks"
 }
+
 variable "kubernetes_version" {
   description = "Kubernetes version to deploy. Will deploy newest AKS version if this value is not set."
   type        = string
   default     = null
 }
-
-
-
 
 variable "private_dns_zone_type" {
   type        = string
@@ -35,13 +35,11 @@ https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/
 EOD
 }
 
-
 variable "private_dns_zone_id" {
   type        = string
   default     = null
   description = "Id of the private DNS Zone when <private_dns_zone_type> is custom"
 }
-
 
 variable "aks_pod_cidr" {
   type    = string
@@ -63,32 +61,12 @@ variable "load_balancer_sku" {
   default = "Basic"
 }
 
-
-
-
 variable "dns_prefix" {
   description = "DNS prefix specified when creating the managed cluster."
   type        = string
   default     = "aks.dns.prefix"
 }
 
-
-
-/*
-variable "private_cluster_enabled" {
-  type = bool
-  default = true
-}
-
-variable "automatic_channel_upgrade" {
-  type = bool
-  default = true
-}
-variable "sku_tier" {
-  type = string
-  default = "Free"
-}
-*/
 variable "workload_identity_enabled" {
   type    = bool
   default = true
@@ -129,15 +107,11 @@ variable "nodes_pools" {
   default = []
 }
 
-
-
 variable "default_node_pool_name" {
   description = "Default node pool name.  Value refers to key within node_pools variable."
   type        = string
   default     = "default"
 }
-
-
 
 variable "default_node_pool_type" {
   type    = string
@@ -152,7 +126,7 @@ variable "default_node_pool_vm_size" {
 #var for aks vnet
 variable "vnet_subnet_id" {
   type = string
-  default = ""  #"/subscriptions/def76464-cef6-4c3b-9728-8952072734eb/resourceGroups/tf-anoa-public-aks-rg/providers/Microsoft.Network/virtualNetworks/vnet-aks/subnets/snet-aks"
+  default = "" 
 }
 
 variable "pod_subnet_id" {
@@ -258,15 +232,6 @@ variable "admin_username" {
   type    = string
   default = "azureuser"
 }
-/*
-variable "ssh_public_key" {
-  type = string
-  default = (file("~/.ssh/id_rsa.pub"))
-}
-*/
-
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
 
 ########################
 # AKS Configuration   ##
@@ -277,8 +242,6 @@ variable "cluster_name" {
   type        = string
   default     = null
 }
-
-
 
 variable "node_resource_group" {
   description = "The name of the Resource Group where the Kubernetes Nodes should exist."
@@ -326,8 +289,6 @@ variable "sku_tier" {
     error_message = "Available SKU Tiers are \"Free\" and \"Paid\"."
   }
 }
-
-
 
 variable "network_plugin" {
   description = "network plugin to use for networking (azure or kubenet)"
@@ -496,9 +457,6 @@ variable "windows_profile" {
   }
 }
 
-
-
-
 variable "rbac" {
   description = "role based access control settings"
   type = object({
@@ -537,9 +495,6 @@ variable "enable_azure_policy" {
   type        = bool
   default     = false
 }
-
-
-
 
 variable "api_server_authorized_ip_ranges" {
   description = "authorized IP ranges to communicate with K8s API"

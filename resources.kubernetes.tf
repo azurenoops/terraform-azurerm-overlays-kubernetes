@@ -6,10 +6,6 @@
 # Azure Kubernetes Service (AKS) Cluster
 #----------------------------------------------------------------
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
-  # depends_on = [
-  #   azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
-  #   azurerm_role_assignment.aks_uai_route_table_contributor,
-  # ]
   depends_on = [ data.azurerm_subnet.aks_subnet, azurerm_role_assignment.route_table_network_contributor ]
   name                = local.cluster_name
   location            = local.location

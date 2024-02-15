@@ -4,12 +4,6 @@ variable "create_resource_group" {
     type        = bool
     default     = true
 }
-
- 
-
- 
- 
-
  
 variable "custom_resource_group_name" {
     description = "A custom name for the resource group. If not specified, a name will be generated."
